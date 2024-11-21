@@ -18,7 +18,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "validate": "your-validation-command-here"
+    "validate": "npm-run-all --parallel test lint build"
   },
   "eslintConfig": {
     "extends": [
