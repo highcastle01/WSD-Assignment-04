@@ -1,0 +1,88 @@
+name: ci-cd-pipeline
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+        
+      - name: Run lint check
+        run: npm run lint
+        
+      - name: Check web standards
+        run: npm run validate
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: npm
+          
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        
+      - name: Performance check
+        run: npm run lighthouse
+
+      - name: Upload build artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./build"
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+        id: deployment
+        
+      # - name: Send deployment notification
+      #   uses: licenseware/send-email-notification@v1
+      #   with:
+      #     api-key: ${{ secrets.SENDGRID_API_KEY }}
+      #     subject: "배포 완료 알림 - ${{ github.repository }}"
+      #     from-email: ${{ secrets.SENDER_EMAIL }}
+      #     to-email: castle.h0326@gmail.com
+      #     markdown-body: |
+      #       # 배포 완료 알림
+            
+      #       - 레포지토리: ${{ github.repository }}
+      #       - 브랜치: ${{ github.ref }}
+      #       - 커밋: ${{ github.sha }}
+      #       - 배포 시간: ${{ steps.deployment.outputs.time }}
+      #       - 배포 URL: ${{ steps.deployment.outputs.page_url }}
+            
+      #       자세한 내용은 GitHub Actions에서 확인하실 수 있습니다.
+      #       ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
