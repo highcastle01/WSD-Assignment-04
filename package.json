@@ -16,7 +16,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "validate": "npm-run-all --parallel test lint build",
-    "lighthouse": "lighthouse --view"
+    "lighthouse": "lighthouse http://localhost:3000 --view"
   },
   "eslintConfig": {
     "extends": [
