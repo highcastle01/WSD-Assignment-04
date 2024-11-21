@@ -11,5 +11,10 @@ module.exports = {
     parserOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module'
+    },
+    settings: {
+      react: {
+        version: 'detect'
+      }
     }
   }
