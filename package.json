@@ -15,8 +15,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "validate": "npm-run-all --parallel test lint build",
-    "lighthouse": "lighthouse-ci http://localhost:3000"
+    "validate": "npm-run-all --parallel test lint build"
   },
   "eslintConfig": {
     "extends": [

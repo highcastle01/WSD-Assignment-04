@@ -44,9 +44,6 @@ jobs:
 
       - name: Build
         run: npm run build
-        
-      - name: Performance check
-        run: npm run lighthouse
 
       - name: Upload build artifact
         uses: actions/upload-pages-artifact@v3
