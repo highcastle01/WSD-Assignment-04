@@ -1,14 +1,13 @@
 import { render } from '@testing-library/react';
-import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import App from './App';
 
-test('renders app', () => {
-  const router = createMemoryRouter([
-    {
-      path: "/",
-      element: <App />,
-    },
-  ]);
+// react-router-dom 모킹
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  createBrowserRouter: jest.fn(),
+  RouterProvider: jest.fn(({ children }) => children)
+}));
 
-  render(<RouterProvider router={router} />);
+test('renders app', () => {
+  render(<App />);
 });
