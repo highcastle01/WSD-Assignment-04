@@ -6,6 +6,10 @@ import AuthPage from './pages/AuthPage';
 // import SearchPage from './pages/SearchPage';
 // import WishlistPage from './pages/WishlistPage';
 
+const basename = process.env.NODE_ENV === 'development' 
+  ? '/' 
+  : '/wsd-assignment-02';
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -53,7 +57,7 @@ const router = createBrowserRouter([
   //   )
   // }
 ], {
-  basename: '/wsd-assignment-02'
+  basename: basename
 });
 
 export default function App() {

@@ -16,7 +16,7 @@ export default function HeaderPage() {
                     padding: 0
                 }}>
                     <li><Link to="/">Home</Link></li>
-                    <li><Link to="/login">Login</Link></li>
+                    <li><Link to="/signin">Login</Link></li>
                 </ul>
             </nav>
         </header>
