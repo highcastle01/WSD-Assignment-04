@@ -28,6 +28,9 @@ jobs:
         
       - name: Check web standards
         run: npm run validate
+        
+      - name: Run Tests
+        run: npm test -- --passWithNoTests
 
   build:
     needs: test
