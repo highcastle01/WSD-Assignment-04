@@ -1,28 +1,28 @@
 import React from 'react';
-import { Person, MarkunreadMailbox } from '@mui/icons-material';
+import { AccountBox, Lock } from '@mui/icons-material';
 
-const RegisterForm: React.FC = () => {
+const SigninForm: React.FC = () => {
   return (
     <div className="container">
-      <div className="page signup">
+      <div className="page">
         <div className="input">
           <div className="title">
-            <Person /> NAME
+            <AccountBox /> USERNAME
           </div>
           <input className="text" type="text" placeholder="" />
         </div>
         <div className="input">
           <div className="title">
-            <MarkunreadMailbox /> EMAIL
+            <Lock /> PASSWORD
           </div>
-          <input className="text" type="text" placeholder="" />
+          <input className="text" type="password" placeholder="" />
         </div>
         <div className="input">
-          <input type="submit" value="SIGN UP" />
+          <input type="submit" value="SIGN IN" />
         </div>
       </div>
     </div>
   );
 };
 
-export default RegisterForm;
+export default SigninForm;

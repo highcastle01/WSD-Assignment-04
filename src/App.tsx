@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HeaderPage from './pages/HeaderPage'
 import HomePage from './pages/HomePage';
-import AuthPage from './pages/AuthPage';
+import SigninPage from './pages/SigninPage';
 // import PopularPage from './pages/PopularPage';
 // import SearchPage from './pages/SearchPage';
 // import WishlistPage from './pages/WishlistPage';
@@ -14,18 +14,26 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <div>
+      <div className="page-container">
         <HeaderPage />
-        <HomePage />
+        <div className="content-wrapper">
+          <div className="main-content">
+            <HomePage />
+          </div>
+        </div>
       </div>
     )
   },
   {
     path: "/signin",
     element: (
-      <div>
+      <div className="page-container">
         <HeaderPage />
-        <AuthPage />
+        <div className="content-wrapper">
+          <div className="main-content">
+            <SigninPage />
+          </div>
+        </div>
       </div>
     )
   },
