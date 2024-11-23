@@ -16,5 +16,9 @@ module.exports = {
       react: {
         version: 'detect'
       }
+    },
+    rules: {
+      "no-undef": "off",
+      "@typescript-eslint/no-undef": "off"
     }
   }

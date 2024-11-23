@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import './HomeForm.css';
 
-export interface Movie {
+interface Movie {
     id: number;
     title: string;
     poster_path: string;
@@ -41,20 +41,6 @@ const HomeForm: React.FC = () => {
         localStorage.setItem('wishedMovies', JSON.stringify(newWished));
         return newWished;
     });
-  };
-
-  //스크롤
-  const handleWheel = (e: React.WheelEvent, rowRef: React.RefObject<HTMLDivElement>) => {
-    if (rowRef.current) {
-      e.preventDefault(); // 이벤트 전파 중지
-      e.stopPropagation();
-      const scrollSpeed = 100; // 스크롤 속도 조절
-      
-      rowRef.current.scrollBy({
-        left: e.deltaY > 0 ? scrollSpeed : -scrollSpeed,
-        behavior: 'smooth'
-      });
-    }
   };
 
   const scrollRow = (direction: 'left' | 'right', rowRef: React.RefObject<HTMLDivElement>) => {
