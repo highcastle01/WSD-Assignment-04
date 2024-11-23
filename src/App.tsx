@@ -5,6 +5,7 @@ import SigninPage from './pages/SigninPage';
 // import PopularPage from './pages/PopularPage';
 // import SearchPage from './pages/SearchPage';
 // import WishlistPage from './pages/WishlistPage';
+import React from 'react';
 
 const basename = process.env.NODE_ENV === 'development' 
   ? '/' 

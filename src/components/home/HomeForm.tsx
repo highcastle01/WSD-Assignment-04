@@ -2,25 +2,25 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import './HomeForm.css';
 
-interface Movie {
-  id: number;
-  title: string;
-  poster_path: string;
-  overview: string;
-  vote_average: number;
-  release_date: string;
-  genre_ids: number[];
-  isWished?: boolean;
+export interface Movie {
+    id: number;
+    title: string;
+    poster_path: string;
+    overview: string;
+    vote_average: number;
+    release_date: string;
+    genre_ids: number[];
+    isWished?: boolean;
 }
 
 const HomeForm: React.FC = () => {
   const [trendingMovies, setTrendingMovies] = useState<Movie[]>([]);
   const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
   const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>([]);
-  const [upcomingMovies, setUpcomingMovies] = useState<Movie[]>([]);
   const [wishedMovies, setWishedMovies] = useState<number[]>(() => {
-    const saved = localStorage.getItem('wishedMovies');
-    return saved ? JSON.parse(saved) : [];
+  const saved = localStorage.getItem('wishedMovies');
+    
+  return saved ? JSON.parse(saved) : [];
   });
   const [bannerMovie, setBannerMovie] = useState<Movie | null>(null);
   const [showDetails, setShowDetails] = useState(false);
@@ -111,11 +111,16 @@ const HomeForm: React.FC = () => {
     rowRef: React.RefObject<HTMLDivElement> 
   }) => {
     const handleWheelEvent = (e: React.WheelEvent) => {
-      if (rowRef.current) {
-        e.preventDefault(); // 전체 페이지 스크롤 방지
-        const scrollSpeed = 50;
-        rowRef.current.scrollLeft += e.deltaY;
-      }
+        if (rowRef.current) {
+            e.preventDefault(); // 이벤트 전파 중지
+            e.stopPropagation();
+            const scrollSpeed = 100; // 스크롤 속도 조절
+            
+            rowRef.current.scrollBy({
+              left: e.deltaY > 0 ? scrollSpeed : -scrollSpeed,
+              behavior: 'smooth'
+            });
+          }
     };
   
     return (
