@@ -3,7 +3,7 @@ import AuthForm from '../components/auth/AuthForm';
 
 const SigninPage: React.FC = () => {
   return (
-    <div className="signin-page">
+    <div>
       <AuthForm />
     </div>
   );
