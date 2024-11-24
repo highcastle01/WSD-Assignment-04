@@ -87,17 +87,6 @@ const HomeForm: React.FC = () => {
     );
 };
 
-  const scrollRow = (direction: 'left' | 'right', rowRef: React.RefObject<HTMLDivElement>) => {
-    if (rowRef.current) {
-      const containerWidth = rowRef.current.clientWidth;
-      const scrollAmount = containerWidth * 0.8; // 화면 너비의 80%만큼 스크롤
-      rowRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
-
   useEffect(() => {
     const fetchMovies = async () => {
         try {
@@ -135,78 +124,162 @@ const HomeForm: React.FC = () => {
     }, [TMDB_API_KEY]);
 
   // 영화 섹션 컴포넌트
-  const MovieSection = ({ title, movies, rowRef }: { 
-    title: string, 
-    movies: Movie[], 
-    rowRef: React.RefObject<HTMLDivElement> 
-  }) => {
+  const MovieSection = ({ title, movies, rowRef }: { title: string, movies: Movie[], rowRef: React.RefObject<HTMLDivElement> }) => {
+    const [scrollPosition, setScrollPosition] = useState(0);
+    const autoScrollInterval = useRef<NodeJS.Timeout>();
+    const isUserScrolling = useRef(false);
+
+    // 한 번에 3개의 카드를 스크롤하는 함수
+    const scrollCards = (direction: 'left' | 'right') => {
+        if (rowRef.current) {
+            const cardWidth = 200; // 카드 하나의 너비
+            const gap = 15; // 카드 간의 간격
+            const scrollAmount = (cardWidth + gap) * 3; // 3개의 카드만큼 스크롤
+            
+            let newPosition;
+            if (direction === 'left') {
+                newPosition = Math.max(0, scrollPosition - scrollAmount);
+            } else {
+                newPosition = Math.min(
+                    scrollPosition + scrollAmount,
+                    rowRef.current.scrollWidth - rowRef.current.clientWidth
+                );
+            }
+
+            rowRef.current.scrollTo({
+                left: newPosition,
+                behavior: 'smooth'
+            });
+            setScrollPosition(newPosition);
+        }
+    };
+
+    // 휠 이벤트 핸들러
     const handleWheelEvent = (e: React.WheelEvent) => {
         if (rowRef.current) {
-            e.preventDefault(); // 이벤트 전파 중지
+            e.preventDefault();
             e.stopPropagation();
-            const scrollSpeed = 100; // 스크롤 속도 조절
             
-            rowRef.current.scrollBy({
-              left: e.deltaY > 0 ? scrollSpeed : -scrollSpeed,
-              behavior: 'smooth'
+            isUserScrolling.current = true;
+            const cardWidth = 200;
+            const gap = 15;
+            const scrollAmount = (cardWidth + gap) * 3;
+            
+            const newPosition = scrollPosition + (e.deltaY > 0 ? scrollAmount : -scrollAmount);
+            const maxScroll = rowRef.current.scrollWidth - rowRef.current.clientWidth;
+            const boundedPosition = Math.max(0, Math.min(newPosition, maxScroll));
+            
+            rowRef.current.scrollTo({
+                left: boundedPosition,
+                behavior: 'smooth'
             });
-          }
-    };
-  
-    return (
-      <section className="movie-section">
-        <h2>{title}</h2>
-        <div className="movie-row-container">
-          <button 
-            className="scroll-button left"
-            onClick={() => scrollRow('left', rowRef)}
-          >
-            <span className="arrow">‹</span>
-          </button>
-          <div 
-            className="movie-row" 
-            ref={rowRef}
-            onWheel={handleWheelEvent}
-          >
-            {movies.map((movie) => (
-              <div key={movie.id} className="movie-card">
-                <div 
-                  className="wish-button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleWishClick(movie);
-                  }}
-                >
-                  {wishedMovies.includes(movie.id) ? '❤️' : '🤍'}
-                </div>
-                <img 
-                  src={`${BASE_IMAGE_URL}${movie.poster_path}`} 
-                  alt={movie.title}
-                  className="movie-poster"
-                />
-                <div className="movie-info">
-                  <h3>{movie.title}</h3>
-                  <p className="movie-overview">{movie.overview}</p>
-                  <div className="movie-details">
-                    <span className="rating">⭐ {movie.vote_average.toFixed(1)}</span>
-                    <span className="release-date">{movie.release_date}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <button 
-            className="scroll-button right"
-            onClick={() => scrollRow('right', rowRef)}
-          >
-            <span className="arrow">›</span>
-          </button>
-        </div>
-      </section>
-    );
-  };
+            setScrollPosition(boundedPosition);
 
+            // 자동 스크롤 중지
+            if (autoScrollInterval.current) {
+                clearInterval(autoScrollInterval.current);
+            }
+
+            setTimeout(() => {
+                isUserScrolling.current = false;
+            }, 150);
+        }
+    };
+
+    // 자동 스크롤
+    useEffect(() => {
+        const startAutoScroll = () => {
+            if (rowRef.current) {
+                autoScrollInterval.current = setInterval(() => {
+                    if (!isUserScrolling.current && rowRef.current) {
+                        const cardWidth = 200;
+                        const gap = 15;
+                        const scrollAmount = (cardWidth + gap) * 3;
+                        
+                        let newPosition = scrollPosition + scrollAmount;
+                        if (newPosition >= rowRef.current.scrollWidth - rowRef.current.clientWidth) {
+                            newPosition = 0;
+                        }
+                        
+                        rowRef.current.scrollTo({
+                            left: newPosition,
+                            behavior: 'smooth'
+                        });
+                        setScrollPosition(newPosition);
+                    }
+                }, 3000);
+            }
+        };
+
+        startAutoScroll();
+
+        return () => {
+            if (autoScrollInterval.current) {
+                clearInterval(autoScrollInterval.current);
+            }
+        };
+    }, [scrollPosition]);
+
+    // 스크롤 위치 복원
+    useEffect(() => {
+        if (rowRef.current) {
+            rowRef.current.scrollLeft = scrollPosition;
+        }
+    }, [movies]);
+
+    return (
+        <section className="movie-section">
+            <h2>{title}</h2>
+            <div className="movie-row-container">
+                <button 
+                    className="scroll-button left" 
+                    onClick={() => scrollCards('left')}
+                >
+                    <span className="arrow">‹</span>
+                </button>
+                <div 
+                    className="movie-row" 
+                    ref={rowRef}
+                    onWheel={handleWheelEvent}
+                >
+                    {movies.map((movie) => (
+                        <div key={movie.id} className="movie-card">
+                            <div 
+                                className="wish-button"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    handleWishClick(movie);
+                                }}
+                            >
+                                {wishedMovies.includes(movie.id) ? '❤️' : '🤍'}
+                            </div>
+                            <img 
+                                src={`${BASE_IMAGE_URL}${movie.poster_path}`} 
+                                alt={movie.title} 
+                                className="movie-poster"
+                            />
+                            <div className="movie-info">
+                                <h3>{movie.title}</h3>
+                                <p className="movie-overview">{movie.overview}</p>
+                                <div className="movie-details">
+                                    <span className="rating">⭐ {movie.vote_average.toFixed(1)}</span>
+                                    <span className="release-date">{movie.release_date}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <button 
+                    className="scroll-button right"
+                    onClick={() => scrollCards('right')}
+                >
+                    <span className="arrow">›</span>
+                </button>
+            </div>
+        </section>
+    );
+};
   return (
     <div className="home-container">
         {bannerMovie && (

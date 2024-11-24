@@ -3,6 +3,7 @@ import HeaderPage from './pages/HeaderPage'
 import HomePage from './pages/HomePage';
 import SigninPage from './pages/SigninPage';
 import WishlistPage from './pages/WishlistPage';
+import SearchPage from './pages/SearchPage';
 import React from 'react';
 
 const basename = process.env.NODE_ENV === 'development' 
@@ -63,14 +64,22 @@ const router = createBrowserRouter([
         element: <SigninPage />
       }
     ]
-  }
-  ,
+  },
   {
     element: <ProtectedLayout />,
     children: [
       {
         path: "/wishlist",
         element: <WishlistPage />
+      }
+    ]
+  },
+  {
+    element: <ProtectedLayout />,
+    children: [
+      {
+        path: "/search",
+        element: <SearchPage />
       }
     ]
   }
