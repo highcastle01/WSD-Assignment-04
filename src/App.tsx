@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider, Outlet, Navigate } from 'react-rou
 import HeaderPage from './pages/HeaderPage'
 import HomePage from './pages/HomePage';
 import SigninPage from './pages/SigninPage';
+import WishlistPage from './pages/WishlistPage';
 import React from 'react';
 
 const basename = process.env.NODE_ENV === 'development' 
@@ -64,6 +65,16 @@ const router = createBrowserRouter([
       {
         path: "/signin",
         element: <SigninPage />
+      }
+    ]
+  }
+  ,
+  {
+    element: <ProtectedLayout />,
+    children: [
+      {
+        path: "/wishlist",
+        element: <WishlistPage />
       }
     ]
   }

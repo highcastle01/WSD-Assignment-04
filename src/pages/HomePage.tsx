@@ -1,7 +1,7 @@
 import React from 'react';
 import HomeForm from '../components/home/HomeForm';
 
-const SigninPage: React.FC = () => {
+const HomePage: React.FC = () => {
   return (
     <div>
       <HomeForm />
@@ -9,4 +9,4 @@ const SigninPage: React.FC = () => {
   );
 };
 
-export default SigninPage;
+export default HomePage;
