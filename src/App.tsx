@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage';
 import SigninPage from './pages/SigninPage';
 import WishlistPage from './pages/WishlistPage';
 import SearchPage from './pages/SearchPage';
+import PopluarPage from './pages/PopularPage';
 import React from 'react';
 
 const basename = process.env.NODE_ENV === 'development' 
@@ -80,6 +81,16 @@ const router = createBrowserRouter([
       {
         path: "/search",
         element: <SearchPage />
+      }
+    ]
+  }
+  ,
+  {
+    element: <ProtectedLayout />,
+    children: [
+      {
+        path: "/popular",
+        element: <PopluarPage />
       }
     ]
   }

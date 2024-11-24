@@ -13,6 +13,60 @@
     z-index: 100;
 }
 
+/* 뷰 모드 컨트롤 스타일 추가 */
+.view-mode-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.view-mode-button {
+    padding: 8px 16px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.view-mode-button.active {
+    background-color: #e50914;
+}
+
+/* 페이지네이션 스타일 추가 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 20px 0;
+}
+
+.pagination-button {
+    padding: 8px 12px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pagination-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-button.active {
+    background-color: #e50914;
+}
+
+.pagination-button:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* 기존 스타일 유지 */
 .search-filters {
     display: flex;
     gap: 15px;
@@ -75,12 +129,43 @@
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
     padding: 20px 0;
-}
-
-.movie-card {
+    position: relative;
+  }
+  
+  .movie-card {
     position: relative;
     transition: transform 0.3s ease;
-}
+    height: 300px;
+    margin-bottom: 20px;
+  }
+  
+  .movie-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    padding: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+  }
+  
+  .wish-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 3;
+  }
 
 .movie-card:hover {
     transform: scale(1.05);
