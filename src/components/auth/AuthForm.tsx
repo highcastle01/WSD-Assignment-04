@@ -30,7 +30,7 @@ const AuthForm: React.FC = () => {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
+    const { name, checked, type, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
@@ -59,7 +59,7 @@ const AuthForm: React.FC = () => {
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('TMDb-Key', user.password);
         localStorage.setItem('currentUser', JSON.stringify(user));
-        toast.success('로그인 성공!');
+        toast.success('로그인에 성공하였습니다.');
         window.location.reload();
         navigate('/');
       } else {
@@ -110,7 +110,7 @@ const AuthForm: React.FC = () => {
       // 업데이트된 사용자 목록 저장
       localStorage.setItem('users', JSON.stringify(existingUsers));
       
-      toast.success('회원가입 성공!');
+      toast.success('회원가입에 성공하였습니다.');
       setIsActive(false);
     } catch (error) {
       toast.error('회원가입 중 오류가 발생했습니다.');
