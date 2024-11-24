@@ -18,14 +18,12 @@ const ProtectedLayout = () => {
   }
 
   return (
-    <div className="page-container">
+    <>
       <HeaderPage />
       <div className="content-wrapper">
-        <div className="main-content">
-          <Outlet />
-        </div>
+        <Outlet />
       </div>
-    </div>
+    </>
   );
 };
 
@@ -38,14 +36,12 @@ const AuthLayout = () => {
   }
 
   return (
-    <div className="page-container">
+    <>
       <HeaderPage />
       <div className="content-wrapper">
-        <div className="main-content">
-          <Outlet />
-        </div>
+        <Outlet />
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,7 +1,14 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #141414;
+}
+
 .container {
   position: relative;
   max-width: 460px;
   width: 100%;
+  margin-top: 80px;
   margin: 0 auto 100px;
 }
 

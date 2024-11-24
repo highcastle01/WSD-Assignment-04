@@ -4,19 +4,25 @@ import axios from 'axios';
 import './HomeForm.css';
 
 interface Movie {
-    id: number;
-    title: string;
-    poster_path: string;
-    overview: string;
-    vote_average: number;
-    release_date: string;
-    genre_ids: number[];
-    isWished?: boolean;
+  id: number;
+  title: string;
+  poster_path: string;
+  overview: string;
+  vote_average: number;
+  release_date: string;
+  genre_ids: number[];
+  isWished?: boolean;
 }
 
-interface WishlistItem {
+interface WishlistMovie {
+  id: number;
+  title: string;
+  poster_path: string;
+  overview: string;
+  vote_average: number;
+  release_date: string;
+  genre_ids: number[];
   userId: string;
-  movieId: number;
   createdAt: string;
 }
 
@@ -26,13 +32,13 @@ const HomeForm: React.FC = () => {
   const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>([]);
   const [wishedMovies, setWishedMovies] = useState<number[]>(() => {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    const allWishlist: WishlistItem[] = JSON.parse(localStorage.getItem('wishlist') || '[]');
+    const allWishlist: WishlistMovie[] = JSON.parse(localStorage.getItem('wishlist') || '[]');
     
-    // 현재 사용자의 위시리스트만 필터링하여 movieId 배열로 반환
+    // 현재 사용자의 위시리스트에서 영화 ID만 추출
     return allWishlist
-      .filter(item => item.userId === currentUser.email)
-      .map(item => item.movieId);
-  });
+        .filter(item => item.userId === currentUser.email)
+        .map(item => item.id); // movieId 대신 id 사용
+});
   const [bannerMovie, setBannerMovie] = useState<Movie | null>(null);
   const [showDetails, setShowDetails] = useState(false);
 
@@ -45,42 +51,41 @@ const HomeForm: React.FC = () => {
   const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/original';
 
   //찜목록
-  const handleWishClick = (movieId: number) => {
+  const handleWishClick = (movie: Movie) => {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    
     if (!currentUser.email) {
-      toast.error('로그인이 필요한 서비스입니다.');
-      return;
+        toast.error('로그인이 필요한 서비스입니다.');
+        return;
     }
-  
-    setWishedMovies(prev => {
-      const allWishlist: WishlistItem[] = JSON.parse(localStorage.getItem('wishlist') || '[]');
-      let newWishlist: WishlistItem[];
-  
-      if (prev.includes(movieId)) {
-        // 이미 찜한 영화라면 제거
+
+    const allWishlist: WishlistMovie[] = JSON.parse(localStorage.getItem('wishlist') || '[]');
+    const isWished = allWishlist.some(
+        item => item.userId === currentUser.email && item.id === movie.id
+    );
+
+    let newWishlist: WishlistMovie[];
+    if (isWished) {
         newWishlist = allWishlist.filter(
-          item => !(item.userId === currentUser.email && item.movieId === movieId)
+            item => !(item.userId === currentUser.email && item.id === movie.id)
         );
-      } else {
-        // 새로운 영화 찜하기
+    } else {
         newWishlist = [
-          ...allWishlist,
-          { 
-            userId: currentUser.email, 
-            movieId,
-            createdAt: new Date().toISOString() // 현재 시간 저장
-          }
+            ...allWishlist,
+            {
+                ...movie,
+                userId: currentUser.email,
+                createdAt: new Date().toISOString()
+            }
         ];
-      }
-  
-      localStorage.setItem('wishlist', JSON.stringify(newWishlist));
-      
-      return newWishlist
-        .filter(item => item.userId === currentUser.email)
-        .map(item => item.movieId);
-    });
-  };
+    }
+    
+    localStorage.setItem('wishlist', JSON.stringify(newWishlist));
+    setWishedMovies(
+        newWishlist
+            .filter(item => item.userId === currentUser.email)
+            .map(item => item.id)
+    );
+};
 
   const scrollRow = (direction: 'left' | 'right', rowRef: React.RefObject<HTMLDivElement>) => {
     if (rowRef.current) {
@@ -170,7 +175,7 @@ const HomeForm: React.FC = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    handleWishClick(movie.id);
+                    handleWishClick(movie);
                   }}
                 >
                   {wishedMovies.includes(movie.id) ? '❤️' : '🤍'}

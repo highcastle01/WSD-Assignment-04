@@ -1,7 +1,14 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #141414;
+}
+
 .home-container {
   padding: 20px;
   background-color: #141414;
   min-height: 100vh;
+  margin-top: 80px;
   color: white;
 }
 
