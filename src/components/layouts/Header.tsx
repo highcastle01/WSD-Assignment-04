@@ -24,8 +24,15 @@ const Header: React.FC = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('currentUser');
+    const users = localStorage.getItem('users');
+    const wishlist = localStorage.getItem('wishlist');
+    
+    // 로컬 스토리지 전체 삭제
+    localStorage.clear();
+    
+    // 보존할 데이터 다시 저장
+    if (users) localStorage.setItem('users', users);
+    if (wishlist) localStorage.setItem('wishlist', wishlist);
     window.location.reload(); // 로그아웃 시 새로고침
   };
 

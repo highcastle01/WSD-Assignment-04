@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import './HomeForm.css';
 
@@ -13,14 +14,24 @@ interface Movie {
     isWished?: boolean;
 }
 
+interface WishlistItem {
+  userId: string;
+  movieId: number;
+  createdAt: string;
+}
+
 const HomeForm: React.FC = () => {
   const [trendingMovies, setTrendingMovies] = useState<Movie[]>([]);
   const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
   const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>([]);
   const [wishedMovies, setWishedMovies] = useState<number[]>(() => {
-  const saved = localStorage.getItem('wishedMovies');
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const allWishlist: WishlistItem[] = JSON.parse(localStorage.getItem('wishlist') || '[]');
     
-  return saved ? JSON.parse(saved) : [];
+    // 현재 사용자의 위시리스트만 필터링하여 movieId 배열로 반환
+    return allWishlist
+      .filter(item => item.userId === currentUser.email)
+      .map(item => item.movieId);
   });
   const [bannerMovie, setBannerMovie] = useState<Movie | null>(null);
   const [showDetails, setShowDetails] = useState(false);
@@ -35,11 +46,39 @@ const HomeForm: React.FC = () => {
 
   //찜목록
   const handleWishClick = (movieId: number) => {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    
+    if (!currentUser.email) {
+      toast.error('로그인이 필요한 서비스입니다.');
+      return;
+    }
+  
     setWishedMovies(prev => {
-        const newWished = prev.includes(movieId) ? prev.filter(id => id !== movieId) : [...prev, movieId];
-        
-        localStorage.setItem('wishedMovies', JSON.stringify(newWished));
-        return newWished;
+      const allWishlist: WishlistItem[] = JSON.parse(localStorage.getItem('wishlist') || '[]');
+      let newWishlist: WishlistItem[];
+  
+      if (prev.includes(movieId)) {
+        // 이미 찜한 영화라면 제거
+        newWishlist = allWishlist.filter(
+          item => !(item.userId === currentUser.email && item.movieId === movieId)
+        );
+      } else {
+        // 새로운 영화 찜하기
+        newWishlist = [
+          ...allWishlist,
+          { 
+            userId: currentUser.email, 
+            movieId,
+            createdAt: new Date().toISOString() // 현재 시간 저장
+          }
+        ];
+      }
+  
+      localStorage.setItem('wishlist', JSON.stringify(newWishlist));
+      
+      return newWishlist
+        .filter(item => item.userId === currentUser.email)
+        .map(item => item.movieId);
     });
   };
 
