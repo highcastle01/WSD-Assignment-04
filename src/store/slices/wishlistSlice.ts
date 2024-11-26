@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
+/* eslint-disable no-unused-vars */
 import type { PayloadAction } from '@reduxjs/toolkit';
+/* eslint-disable no-unused-vars */
 import type { WishlistMovie } from '../../types/movie';
 
 interface WishlistState {

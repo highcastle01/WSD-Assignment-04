@@ -1,7 +1,9 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+/* eslint-disable no-unused-vars */
 import type { RootState } from '../store';
 import { addToWishlist, removeFromWishlist } from '../store/slices/wishlistSlice';
+/* eslint-disable no-unused-vars */
 import type { Movie } from '../types/movie';
 import { toast } from 'react-toastify';
 
