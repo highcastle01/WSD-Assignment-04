@@ -119,6 +119,13 @@ const AuthForm: React.FC = () => {
 
   return (
     <>
+      <div className="background-container">
+          <img src="../../../public/poster/image1.jpg" alt="" className="floating-poster" />
+          <img src="/movie-poster2.jpg" alt="" className="floating-poster" />
+          <img src="/movie-poster3.jpg" alt="" className="floating-poster" />
+          <img src="/movie-poster4.jpg" alt="" className="floating-poster" />
+          <img src="/movie-poster5.jpg" alt="" className="floating-poster" />
+      </div>
       <div className={`container ${isActive ? 'active' : ''}`}>
         <div className="card">
           <div className="title">
@@ -153,7 +160,7 @@ const AuthForm: React.FC = () => {
                 checked={formData.rememberMe}
                 onChange={handleInputChange}
               />
-              <label>Remember me</label>
+              <label>로그인 정보 저장하기</label>
             </div>
             <div className="button-container">
                 <button>

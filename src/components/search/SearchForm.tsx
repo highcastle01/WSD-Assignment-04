@@ -29,7 +29,7 @@ const SearchForm: React.FC = () => {
   const lastMovieRef = useRef<HTMLDivElement>(null);
   const TMDB_API_KEY = localStorage.getItem('TMDb-Key');
   const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/w300';
-  const moviesPerPage = 5;
+  const moviesPerPage = 8;
 
   const yearOptions = [
     { value: '-1950', label: '1950년 이전' },
@@ -169,53 +169,69 @@ const SearchForm: React.FC = () => {
     fetchMovies(true);
   };
 
-  const Pagination = () => (
-    <div className="pagination">
-      <button
-        onClick={() => setPage(1)}
-        disabled={page === 1}
-        className="pagination-button"
-      >
-        {'<<'}
-      </button>
-      <button
-        onClick={() => setPage(prev => Math.max(1, prev - 1))}
-        disabled={page === 1}
-        className="pagination-button"
-      >
-        {'<'}
-      </button>
-      {[...Array(Math.min(5, totalPages))].map((_, i) => {
-        const pageNum = page - 2 + i;
-        if (pageNum > 0 && pageNum <= totalPages) {
-          return (
-            <button
-              key={pageNum}
-              onClick={() => setPage(pageNum)}
-              className={`pagination-button ${page === pageNum ? 'active' : ''}`}
-            >
-              {pageNum}
-            </button>
-          );
-        }
-        return null;
-      })}
-      <button
-        onClick={() => setPage(prev => Math.min(totalPages, prev + 1))}
-        disabled={page === totalPages}
-        className="pagination-button"
-      >
-        {'>'}
-      </button>
-      <button
-        onClick={() => setPage(totalPages)}
-        disabled={page === totalPages}
-        className="pagination-button"
-      >
-        {'>>'}
-      </button>
-    </div>
-  );
+  const Pagination = () => {
+    // 현재 페이지 기준으로 표시할 페이지 범위 계산
+    const maxPages = 5; // 한 번에 보여줄 최대 페이지 수
+    const halfMaxPages = Math.floor(maxPages / 2);
+    
+    let startPage = Math.max(1, page - halfMaxPages);
+    const endPage = Math.min(totalPages, startPage + maxPages - 1);
+    
+    // 시작 페이지 조정
+    if (endPage - startPage + 1 < maxPages) {
+      startPage = Math.max(1, endPage - maxPages + 1);
+    }
+  
+    // 페이지 배열 생성
+    const pageNumbers = Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
+  
+    return (
+      <div className="pagination">
+        <button 
+          className="pagination-button" 
+          onClick={() => setPage(1)} 
+          disabled={page === 1}
+        >
+          {'<<'}
+        </button>
+        <button 
+          className="pagination-button" 
+          onClick={() => setPage(prev => prev - 1)} 
+          disabled={page === 1}
+        >
+          {'<'}
+        </button>
+        
+        {pageNumbers.map(pageNum => (
+          <button
+            key={pageNum}
+            onClick={() => setPage(pageNum)}
+            className={`pagination-button ${page === pageNum ? 'active' : ''}`}
+          >
+            {pageNum}
+          </button>
+        ))}
+        
+        <button 
+          className="pagination-button" 
+          onClick={() => setPage(prev => prev + 1)} 
+          disabled={page === totalPages}
+        >
+          {'>'}
+        </button>
+        <button 
+          className="pagination-button" 
+          onClick={() => setPage(totalPages)} 
+          disabled={page === totalPages}
+        >
+          {'>>'}
+        </button>
+      </div>
+    );
+  };
 
   return (
     <div className="search-container">
