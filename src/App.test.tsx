@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import App from './App';
+import React from 'react';
 
 // react-router-dom 모킹
 jest.mock('react-router-dom', () => ({
