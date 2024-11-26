@@ -41,11 +41,12 @@ const Header: React.FC = () => {
       <div className="header-content">
         <div className="header-left">
           <Link to="/">
-            <img 
+            {/* <img 
               src="/netflix-logo.png" 
               alt="Logo" 
               className="header-logo"
-            />
+            /> */}
+            Castle Movie
           </Link>
           <nav className="header-nav">
             <Link to="/">홈</Link>

@@ -1,8 +1,15 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #141414;
+}
+
 .search-container {
     padding: 20px;
     background-color: #141414;
     min-height: 100vh;
     color: white;
+    margin-top: 80px;
 }
 
 .search-header {

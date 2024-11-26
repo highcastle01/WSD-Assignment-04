@@ -6,6 +6,8 @@ import WishlistPage from './pages/WishlistPage';
 import SearchPage from './pages/SearchPage';
 import PopluarPage from './pages/PopularPage';
 import React from 'react';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 const basename = process.env.NODE_ENV === 'development' 
   ? '/' 
@@ -98,6 +100,13 @@ const router = createBrowserRouter([
   basename: basename
 });
 
-export default function App() {
-  return <RouterProvider router={router} />;
-}
+// 루트 컴포넌트
+const Root = () => {
+  return (
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  );
+};
+
+export default Root;

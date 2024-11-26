@@ -1,18 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import './WishlistForm.css';
-
-interface WishlistMovie {
-    id: number;
-    title: string;
-    poster_path: string;
-    overview: string;
-    vote_average: number;
-    release_date: string;
-    genre_ids: number[];
-    userId: string;
-    createdAt: string;
-}
+import { WishlistMovie } from '../../types/movie';
 
 type ViewType = 'card' | 'list';
 type SortType = 'rating' | 'release' | 'wished';

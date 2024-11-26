@@ -2,28 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import './SearchForm.css';
-
-interface Movie {
-  id: number;
-  title: string;
-  poster_path: string;
-  overview: string;
-  vote_average: number;
-  release_date: string;
-  genre_ids: number[];
-}
-
-interface WishlistMovie {
-  id: number;
-  title: string;
-  poster_path: string;
-  overview: string;
-  vote_average: number;
-  release_date: string;
-  genre_ids: number[];
-  userId: string;
-  createdAt: string;
-}
+import { Movie } from '../../types/movie';
+import { useWishlist } from '../../hooks/useWishlist';
 
 interface Genre {
   id: number;
@@ -42,19 +22,14 @@ const SearchForm: React.FC = () => {
   const [hasMore, setHasMore] = useState(true);
   const [viewMode, setViewMode] = useState<'infinite' | 'pagination'>('infinite');
   const [totalPages, setTotalPages] = useState(0);
-  const [wishedMovies, setWishedMovies] = useState<number[]>(() => {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    const allWishlist: WishlistMovie[] = JSON.parse(localStorage.getItem('wishlist') || '[]');
-    return allWishlist
-      .filter(item => item.userId === currentUser.email)
-      .map(item => item.id);
-  });
+
+  const { handleWishClick, isMovieWished } = useWishlist();
 
   const observer = useRef<IntersectionObserver>();
   const lastMovieRef = useRef<HTMLDivElement>(null);
   const TMDB_API_KEY = localStorage.getItem('TMDb-Key');
   const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/w300';
-  const moviesPerPage = 10;
+  const moviesPerPage = 5;
 
   const yearOptions = [
     { value: '-1950', label: '1950년 이전' },
@@ -143,42 +118,6 @@ const SearchForm: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleWishClick = (movie: Movie) => {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (!currentUser.email) {
-      toast.error('로그인이 필요한 서비스입니다.');
-      return;
-    }
-
-    const allWishlist: WishlistMovie[] = JSON.parse(localStorage.getItem('wishlist') || '[]');
-    const isWished = allWishlist.some(
-      item => item.userId === currentUser.email && item.id === movie.id
-    );
-
-    let newWishlist: WishlistMovie[];
-    if (isWished) {
-      newWishlist = allWishlist.filter(
-        item => !(item.userId === currentUser.email && item.id === movie.id)
-      );
-    } else {
-      newWishlist = [
-        ...allWishlist,
-        {
-          ...movie,
-          userId: currentUser.email,
-          createdAt: new Date().toISOString()
-        }
-      ];
-    }
-
-    localStorage.setItem('wishlist', JSON.stringify(newWishlist));
-    setWishedMovies(
-      newWishlist
-        .filter(item => item.userId === currentUser.email)
-        .map(item => item.id)
-    );
   };
 
   useEffect(() => {
@@ -353,15 +292,8 @@ const SearchForm: React.FC = () => {
             className="movie-card"
             ref={viewMode === 'infinite' && index === movies.length - 1 ? lastMovieRef : null}
           >
-            <div
-              className="wish-button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleWishClick(movie);
-              }}
-            >
-              {wishedMovies.includes(movie.id) ? '❤️' : '🤍'}
+            <div className="wish-button" onClick={() => handleWishClick(movie)}>
+                {isMovieWished(movie.id) ? '❤️' : '🤍'}
             </div>
             <img
               src={`${BASE_IMAGE_URL}${movie.poster_path}`}

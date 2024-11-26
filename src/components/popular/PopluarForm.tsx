@@ -2,28 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import './PopularForm.css';
-
-interface Movie {
-  id: number;
-  title: string;
-  poster_path: string;
-  overview: string;
-  vote_average: number;
-  release_date: string;
-  genre_ids: number[];
-}
-
-interface WishlistMovie {
-    id: number;
-    title: string;
-    poster_path: string;
-    overview: string;
-    vote_average: number;
-    release_date: string;
-    genre_ids: number[];
-    userId: string;
-    createdAt: string;
-  }
+import { Movie } from '../../types/movie';
+import { useWishlist } from '../../hooks/useWishlist';
 
 const PopularForm: React.FC = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -32,43 +12,24 @@ const PopularForm: React.FC = () => {
   const [hasMore, setHasMore] = useState(true);
   const [viewMode, setViewMode] = useState<'infinite' | 'table'>('infinite');
   const [totalPages, setTotalPages] = useState(0);
-  const [wishedMovies, setWishedMovies] = useState<number[]>(() => {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    const allWishlist: WishlistMovie[] = JSON.parse(localStorage.getItem('wishlist') || '[]');
-    
-    // 현재 사용자의 위시리스트에서 영화 ID만 추출
-    return allWishlist
-        .filter(item => item.userId === currentUser.email)
-        .map(item => item.id); // movieId 대신 id 사용
-});
+  const [loadingNewCards, setLoadingNewCards] = useState(false);
 
+  const { handleWishClick, isMovieWished } = useWishlist();
   const observer = useRef<IntersectionObserver>();
   const lastMovieRef = useRef<HTMLDivElement>(null);
   const topButtonRef = useRef<HTMLButtonElement>(null);
   const TMDB_API_KEY = localStorage.getItem('TMDb-Key');
   const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/w300';
-  const moviesPerPage = 10;
+  const moviesPerPage = 5;
 
-  const fetchMovies = async (resetMovies = false) => {
-    if (isLoading) return;
+  const fetchPaginatedMovies = async (pageNum: number) => {
     setIsLoading(true);
     try {
-      const url = `https://api.themoviedb.org/3/movie/popular?api_key=${TMDB_API_KEY}&language=ko-KR&page=${resetMovies ? 1 : page}`;
+      const url = `https://api.themoviedb.org/3/movie/popular?api_key=${TMDB_API_KEY}&language=ko-KR&page=${pageNum}`;
       const response = await axios.get(url);
       const newMovies = response.data.results;
       setTotalPages(Math.ceil(response.data.total_results / moviesPerPage));
-
-      if (viewMode === 'table') {
-        setMovies(newMovies.slice(0, moviesPerPage));
-      } else {
-        setMovies(prev => resetMovies ? newMovies : [...prev, ...newMovies]);
-      }
-      setHasMore(newMovies.length > 0);
-      if (resetMovies) {
-        setPage(1);
-      } else {
-        setPage(prev => prev + 1);
-      }
+      setMovies(newMovies.slice(0, moviesPerPage));
     } catch (error) {
       console.error('Error fetching movies:', error);
       toast.error('영화 데이터를 불러오는데 실패했습니다.');
@@ -77,45 +38,45 @@ const PopularForm: React.FC = () => {
     }
   };
 
-  const handleWishClick = (movie: Movie) => {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (!currentUser.email) {
-      toast.error('로그인이 필요한 서비스입니다.');
-      return;
+  const fetchInfiniteMovies = async (resetMovies = false) => {
+    if (isLoading) return;
+    setIsLoading(true);
+    setLoadingNewCards(true);
+    
+    try {
+      const currentPage = resetMovies ? 1 : page;
+      const url = `https://api.themoviedb.org/3/movie/popular?api_key=${TMDB_API_KEY}&language=ko-KR&page=${currentPage}`;
+      const response = await axios.get(url);
+      const newMovies = response.data.results;
+      
+      setMovies(prev => resetMovies ? newMovies : [...prev, ...newMovies]);
+      setHasMore(newMovies.length > 0);
+      setPage(prev => resetMovies ? 1 : prev + 1);
+    } catch (error) {
+      console.error('Error fetching movies:', error);
+      toast.error('영화 데이터를 불러오는데 실패했습니다.');
+    } finally {
+      setIsLoading(false);
+      setLoadingNewCards(false);
     }
-  
-    const allWishlist: WishlistMovie[] = JSON.parse(localStorage.getItem('wishlist') || '[]');
-    const isWished = allWishlist.some(
-      item => item.userId === currentUser.email && item.id === movie.id
-    );
-  
-    let newWishlist: WishlistMovie[];
-    if (isWished) {
-      newWishlist = allWishlist.filter(
-        item => !(item.userId === currentUser.email && item.id === movie.id)
-      );
+  };
+
+  const handleViewModeChange = (mode: 'infinite' | 'table') => {
+    setViewMode(mode);
+    setMovies([]);
+    setPage(1);
+    setHasMore(true);
+    if (mode === 'table') {
+      fetchPaginatedMovies(1);
     } else {
-      newWishlist = [
-        ...allWishlist,
-        {
-          ...movie,
-          userId: currentUser.email,
-          createdAt: new Date().toISOString()
-        }
-      ];
+      fetchInfiniteMovies(true);
     }
-  
-    localStorage.setItem('wishlist', JSON.stringify(newWishlist));
-    setWishedMovies(
-      newWishlist
-        .filter(item => item.userId === currentUser.email)
-        .map(item => item.id)
-    );
   };
 
   useEffect(() => {
     if (viewMode === 'infinite') {
       if (!hasMore || isLoading) return;
+      
       const options = {
         root: null,
         rootMargin: '20px',
@@ -124,7 +85,7 @@ const PopularForm: React.FC = () => {
 
       observer.current = new IntersectionObserver(entries => {
         if (entries[0].isIntersecting && hasMore) {
-          fetchMovies();
+          fetchInfiniteMovies();
         }
       }, options);
 
@@ -141,89 +102,92 @@ const PopularForm: React.FC = () => {
   }, [hasMore, isLoading, viewMode]);
 
   useEffect(() => {
-    fetchMovies(true);
-  }, [viewMode]);
-
-  useEffect(() => {
-    if (viewMode === 'table' && page > 1) {
-      fetchMovies(true);
+    if (viewMode === 'table') {
+      fetchPaginatedMovies(page);
     }
   }, [page]);
 
   useEffect(() => {
+    if (viewMode === 'infinite') {
+      fetchInfiniteMovies(true);
+    }
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
       if (topButtonRef.current) {
-        topButtonRef.current.style.display = window.scrollY > 300 ? 'block' : 'none';
+        topButtonRef.current.style.display = 
+          viewMode === 'infinite' && window.scrollY > 300 ? 'block' : 'none';
       }
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [viewMode]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const Pagination = () => (
-    <div className="pagination">
-      <button
-        onClick={() => setPage(1)}
-        disabled={page === 1}
-        className="pagination-button"
-      >
-        {'<<'}
-      </button>
-      <button
-        onClick={() => setPage(prev => Math.max(1, prev - 1))}
-        disabled={page === 1}
-        className="pagination-button"
-      >
-        {'<'}
-      </button>
-      {[...Array(Math.min(5, totalPages))].map((_, i) => {
-        const pageNum = page - 2 + i;
-        if (pageNum > 0 && pageNum <= totalPages) {
-          return (
-            <button
-              key={pageNum}
-              onClick={() => setPage(pageNum)}
-              className={`pagination-button ${page === pageNum ? 'active' : ''}`}
-            >
-              {pageNum}
-            </button>
-          );
-        }
-        return null;
-      })}
-      <button
-        onClick={() => setPage(prev => Math.min(totalPages, prev + 1))}
-        disabled={page === totalPages}
-        className="pagination-button"
-      >
-        {'>'}
-      </button>
-      <button
-        onClick={() => setPage(totalPages)}
-        disabled={page === totalPages}
-        className="pagination-button"
-      >
-        {'>>'}
-      </button>
-    </div>
-  );
+  const Pagination = () => {
+    const pageRange = 3;
+    const start = Math.max(1, page - Math.floor(pageRange / 2));
+    const end = Math.min(totalPages, start + pageRange - 1);
+    
+    return (
+      <div className="pagination">
+        <button 
+          className="pagination-button"
+          onClick={() => setPage(1)} 
+          disabled={page === 1}
+        >
+          {'<<'}
+        </button>
+        <button 
+          className="pagination-button"
+          onClick={() => setPage(prev => Math.max(1, prev - 1))} 
+          disabled={page === 1}
+        >
+          {'<'}
+        </button>
+        {Array.from({ length: end - start + 1 }, (_, i) => start + i).map(pageNum => (
+          <button
+            key={pageNum}
+            onClick={() => setPage(pageNum)}
+            className={`pagination-button ${page === pageNum ? 'active' : ''}`}
+          >
+            {pageNum}
+          </button>
+        ))}
+        <button 
+          className="pagination-button"
+          onClick={() => setPage(prev => Math.min(totalPages, prev + 1))} 
+          disabled={page === totalPages}
+        >
+          {'>'}
+        </button>
+        <button 
+          className="pagination-button"
+          onClick={() => setPage(totalPages)} 
+          disabled={page === totalPages}
+        >
+          {'>>'}
+        </button>
+      </div>
+    );
+  };
 
   return (
     <div className="popular-container">
       <div className="view-mode-controls">
         <button
           className={`view-mode-button ${viewMode === 'infinite' ? 'active' : ''}`}
-          onClick={() => setViewMode('infinite')}
+          onClick={() => handleViewModeChange('infinite')}
         >
           무한 스크롤
         </button>
         <button
           className={`view-mode-button ${viewMode === 'table' ? 'active' : ''}`}
-          onClick={() => setViewMode('table')}
+          onClick={() => handleViewModeChange('table')}
         >
           테이블 뷰
         </button>
@@ -231,77 +195,92 @@ const PopularForm: React.FC = () => {
 
       {viewMode === 'infinite' ? (
         <div className="movies-grid">
-          {movies.map((movie, index) => (
-            <div
-              key={movie.id}
-              className="movie-card"
-              ref={index === movies.length - 1 ? lastMovieRef : null}
-            >
-              <div
-                className="wish-button"
-                onClick={() => handleWishClick(movie)}
-              >
-                {wishedMovies.includes(movie.id) ? '❤️' : '🤍'}
-              </div>
-              <img
-                src={`${BASE_IMAGE_URL}${movie.poster_path}`}
-                alt={movie.title}
-                className="movie-poster"
-              />
-              <div className="movie-info">
-                <h3>{movie.title}</h3>
-                <p className="movie-overview">{movie.overview}</p>
-                <div className="movie-details">
-                  <span className="rating">⭐ {movie.vote_average.toFixed(1)}</span>
-                  <span className="release-date">{movie.release_date}</span>
+          {movies.length === 0 && isLoading ? (
+            <div className="initial-loading">Loading...</div>
+          ) : (
+            <>
+              {/* 기존 영화 카드들 */}
+              {movies.map((movie, index) => (
+                <div
+                  key={movie.id}
+                  className="movie-card"
+                  ref={index === movies.length - 1 ? lastMovieRef : null}
+                >
+                  <div className="wish-button" onClick={() => handleWishClick(movie)}>
+                    {isMovieWished(movie.id) ? '❤️' : '🤍'}
+                  </div>
+                  <img
+                    src={`${BASE_IMAGE_URL}${movie.poster_path}`}
+                    alt={movie.title}
+                    className="movie-poster"
+                  />
+                  <div className="movie-info">
+                    <h3>{movie.title}</h3>
+                    <p className="movie-overview">{movie.overview}</p>
+                    <div className="movie-details">
+                      <span className="rating">⭐ {movie.vote_average.toFixed(1)}</span>
+                      <span className="release-date">{movie.release_date}</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              ))}
+
+              {/* 2. 새로운 영화 로딩을 위한 더미 카드들 */}
+              {loadingNewCards && (
+                [...Array(moviesPerPage)].map((_, index) => (
+                  <div key={`loading-${index}`} className="movie-card loading-placeholder">
+                    <div className="loading-card">Loading...</div>
+                  </div>
+                ))
+              )}
+            </>
+          )}
         </div>
       ) : (
         <div className="table-container">
-          <table className="movie-table">
-            <thead>
-              <tr>
-                <th>포스터</th>
-                <th>제목</th>
-                <th>개봉일</th>
-                <th>평점</th>
-                <th>찜하기</th>
-              </tr>
-            </thead>
-            <tbody>
-              {movies.map(movie => (
-                <tr key={movie.id}>
-                  <td>
-                    <img
-                      src={`${BASE_IMAGE_URL}${movie.poster_path}`}
-                      alt={movie.title}
-                      className="table-poster"
-                    />
-                  </td>
-                  <td>{movie.title}</td>
-                  <td>{movie.release_date}</td>
-                  <td>⭐ {movie.vote_average.toFixed(1)}</td>
-                  <td>
-                    <button
-                      className="wish-button-table"
-                      onClick={() => handleWishClick(movie)}
-                    >
-                      {wishedMovies.includes(movie.id) ? '❤️' : '🤍'}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <Pagination />
+          {isLoading ? (
+            <div className="loading-overlay">Loading...</div>
+          ) : (
+            <>
+              <table className="movie-table">
+                <thead>
+                  <tr>
+                    <th>포스터</th>
+                    <th>제목</th>
+                    <th>개봉일</th>
+                    <th>평점</th>
+                    <th>찜하기</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {movies.map(movie => (
+                    <tr key={movie.id}>
+                      <td>
+                        <img
+                          src={`${BASE_IMAGE_URL}${movie.poster_path}`}
+                          alt={movie.title}
+                          className="table-poster"
+                        />
+                      </td>
+                      <td>{movie.title}</td>
+                      <td>{movie.release_date}</td>
+                      <td>⭐ {movie.vote_average.toFixed(1)}</td>
+                      <td>
+                        <button 
+                          className="wish-button-table" 
+                          onClick={() => handleWishClick(movie)}
+                        >
+                          {isMovieWished(movie.id) ? '❤️' : '🤍'}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <Pagination />
+            </>
+          )}
         </div>
-      )}
-
-      {viewMode === 'infinite' && isLoading && (
-        <div className="loading">Loading...</div>
       )}
 
       <button ref={topButtonRef} className="top-button" onClick={scrollToTop}>
