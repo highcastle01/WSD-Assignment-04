@@ -30,6 +30,10 @@ module.exports = {
       "ignoreRestSiblings": true,
       "argsIgnorePattern": "^_",
       "varsIgnorePattern": "^_|^type"
-    }]
+    }],
+    "@typescript-eslint/no-explicit-any": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
   }
 }
