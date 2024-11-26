@@ -6,8 +6,11 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'plugin:react/recommended'
+    'plugin:react/recommended',
+    'plugin:@typescript-eslint/recommended'
   ],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module'
@@ -22,9 +25,6 @@ module.exports = {
     "@typescript-eslint/no-undef": "off",
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": ["error", {
-      "varsIgnorePattern": "^_",
-      "argsIgnorePattern": "^_",
-      "ignoreRestSiblings": true,
       "vars": "all",
       "args": "after-used",
       "ignoreRestSiblings": true,
