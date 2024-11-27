@@ -20,10 +20,8 @@ const SearchForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [viewMode, setViewMode] = useState<'infinite' | 'pagination'>('pagination');
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [showRecentSearches, setShowRecentSearches] = useState(false);
-
   const { handleWishClick, isMovieWished } = useWishlist();
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -217,20 +215,6 @@ const SearchForm: React.FC = () => {
   return (
     <div className="search-container">
       <div className="search-header">
-        <div className="view-mode-controls">
-          <button
-            className={`view-mode-button ${viewMode === 'infinite' ? 'active' : ''}`}
-            onClick={() => setViewMode('infinite')}
-          >
-            ♾️
-          </button>
-          <button
-            className={`view-mode-button ${viewMode === 'pagination' ? 'active' : ''}`}
-            onClick={() => setViewMode('pagination')}
-          >
-            📊
-          </button>
-        </div>
         <div className="search-filters">
           <div className="search-input-container">
             <input
@@ -323,17 +307,16 @@ const SearchForm: React.FC = () => {
           ))}
         </div>
       </div>
+
+      <Pagination />
+
       <div className="movies-grid">
         {movies.map((movie) => (
           <div key={movie.id} className="movie-card">
             <div className="wish-button" onClick={() => handleWishClick(movie)}>
               {isMovieWished(movie.id) ? '❤️' : '🤍'}
             </div>
-            <img
-              src={`${BASE_IMAGE_URL}${movie.poster_path}`}
-              alt={movie.title}
-              className="movie-poster"
-            />
+            <img src={`${BASE_IMAGE_URL}${movie.poster_path}`} alt={movie.title} className="movie-poster" />
             <div className="movie-info">
               <h3>{movie.title}</h3>
               <p className="movie-overview">{movie.overview}</p>
@@ -345,7 +328,7 @@ const SearchForm: React.FC = () => {
           </div>
         ))}
       </div>
-      {viewMode === 'pagination' && <Pagination />}
+
       {isLoading && <div className="loading">Loading...</div>}
     </div>
   );

@@ -665,14 +665,17 @@ body {
     border-color: rgba(255, 255, 255, 0.05);
 }
 
-/* 모바일 최적화 스타일 */
 @media (max-width: 768px) {
+    .search-container {
+      padding: 10px;
+      margin-top: 60px;
+      width: 100%;
+    }
+  
     .search-header {
       position: sticky;
       top: 60px;
-      background: #141414;
-      padding: 10px;
-      z-index: 100;
+      padding: 10px 0;
     }
   
     .search-filters {
@@ -680,20 +683,12 @@ body {
       gap: 8px;
     }
   
-    .search-input-container {
-      width: 100%;
-    }
-  
     .search-input,
-    .filter-select {
-      width: 100%;
-      height: 40px;
-      font-size: 14px;
-    }
-  
+    .filter-select,
     .reset-button {
       width: 100%;
       height: 40px;
+      font-size: 14px;
     }
   
     .genre-filters {
@@ -711,6 +706,7 @@ body {
       white-space: nowrap;
     }
   
+    /* 영화 카드 그리드 수정 */
     .movies-grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
@@ -718,27 +714,21 @@ body {
     }
   
     .movie-card {
-      height: auto;
+      height: 220px;
     }
   
     .movie-poster {
-      height: 180px;
+      height: 220px;
     }
   
     .movie-info {
-      position: static;
-      opacity: 1;
       padding: 8px;
-      background: linear-gradient(to top, #141414, transparent);
     }
   
     .movie-info h3 {
       font-size: 13px;
       margin: 4px 0;
-      -webkit-line-clamp: 2;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      -webkit-line-clamp: 1;
     }
   
     .movie-overview {
@@ -750,12 +740,13 @@ body {
     }
   
     .wish-button {
-      width: 28px;
-      height: 28px;
+      width: 30px;
+      height: 30px;
       top: 5px;
       right: 5px;
     }
   
+    /* 페이지네이션 수정 */
     .pagination {
       padding: 15px 0;
       gap: 5px;
@@ -768,15 +759,19 @@ body {
     }
   }
   
-  /* 작은 모바일 화면 */
+  /* 더 작은 모바일 화면 */
   @media (max-width: 480px) {
     .movies-grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 8px;
     }
   
+    .movie-card {
+      height: 180px;
+    }
+  
     .movie-poster {
-      height: 150px;
+      height: 180px;
     }
   
     .movie-info h3 {
@@ -791,16 +786,16 @@ body {
       max-height: 200px;
       overflow-y: auto;
     }
-  
-    .recent-search-item {
-      padding: 8px 12px;
-    }
   }
   
   /* 가로 모드 대응 */
   @media (max-width: 896px) and (orientation: landscape) {
     .movies-grid {
       grid-template-columns: repeat(4, 1fr);
+    }
+  
+    .movie-card {
+      height: 160px;
     }
   
     .movie-poster {

@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider, Outlet, Navigate } from 'react-router-dom';
+import { createHashRouter, RouterProvider, Outlet, Navigate } from 'react-router-dom';
 import HeaderPage from './pages/HeaderPage'
 import HomePage from './pages/HomePage';
 import SigninPage from './pages/SigninPage';
@@ -9,10 +9,6 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import NotFoundPage from './pages/NotFoundPage';
-
-const basename = process.env.NODE_ENV === 'development' 
-  ? '/' 
-  : '/wsd-assignment-02';
 
 // 보호된 레이아웃 컴포넌트
 const ProtectedLayout = () => {
@@ -50,7 +46,7 @@ const AuthLayout = () => {
   );
 };
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     element: <ProtectedLayout />,
     children: [
@@ -75,22 +71,11 @@ const router = createBrowserRouter([
       {
         path: "/wishlist",
         element: <WishlistPage />
-      }
-    ]
-  },
-  {
-    element: <ProtectedLayout />,
-    children: [
+      },
       {
         path: "/search",
         element: <SearchPage />
-      }
-    ]
-  }
-  ,
-  {
-    element: <ProtectedLayout />,
-    children: [
+      },
       {
         path: "/popular",
         element: <PopluarPage />
@@ -101,9 +86,7 @@ const router = createBrowserRouter([
     path: "*",
     element: <NotFoundPage />
   }
-], {
-  basename: basename
-});
+]);
 
 // 루트 컴포넌트
 const Root = () => {
