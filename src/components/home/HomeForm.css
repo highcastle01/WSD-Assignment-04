@@ -326,143 +326,58 @@ body {
   overflow: hidden;
 }
 
-/* 기본 스타일 유지 후 모바일 대응 추가 */
-
-/* 태블릿 대응 */
 @media (max-width: 1024px) {
   .banner-section {
-    height: 60vh;
-    padding: 0 30px;
-  }
-
-  .banner-content {
-    left: 30px;
-    bottom: 80px;
-    max-width: 500px;
-  }
-
-  .banner-title {
-    font-size: 2.5rem;
-  }
-
-  .movie-row-container {
-    padding: 0 30px;
-  }
-
-  .movie-card {
-    width: 160px;
-  }
-
-  .movie-poster {
-    height: 240px;
-  }
-}
-
-/* 모바일 대응 */
-@media (max-width: 768px) {
-  .home-container {
-    margin-top: 60px;
-    padding: 10px;
-  }
-
-  .banner-section {
     height: 50vh;
-    padding: 0 15px;
+    padding: 0 20px;
   }
 
   .banner-content {
-    left: 15px;
-    bottom: 40px;
-    max-width: 100%;
-    padding: 15px;
-  }
-
-  .banner-title {
-    font-size: 1.8rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .banner-buttons button {
-    padding: 0.6rem 1.5rem;
-    font-size: 0.9rem;
-  }
-
-  .banner-overview {
-    font-size: 0.9rem;
-    line-height: 1.4;
-  }
-
-  .metadata {
-    font-size: 0.9rem;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .movie-section h2 {
-    font-size: 1.2rem;
-    margin: 15px;
+    left: 20px;
+    bottom: 60px;
+    max-width: 80%;
   }
 
   .movie-row-container {
-    padding: 0 15px;
-  }
-
-  .movie-row {
-    gap: 8px;
-    padding: 10px 0;
-  }
-
-  .movie-card {
-    width: 120px;
-  }
-
-  .movie-poster {
-    height: 180px;
-  }
-
-  .movie-info {
-    padding: 8px;
-  }
-
-  .movie-info h3 {
-    font-size: 0.9rem;
-    margin-bottom: 4px;
-  }
-
-  .movie-overview {
-    font-size: 0.7rem;
-    -webkit-line-clamp: 2;
-  }
-
-  .movie-details {
-    font-size: 0.7rem;
-  }
-
-  .wish-button {
-    width: 28px;
-    height: 28px;
-    top: 5px;
-    right: 5px;
+    padding: 0 20px;
   }
 
   .scroll-button {
-    width: 30px;
-    height: 60px;
-  }
-
-  .scroll-button .arrow {
-    font-size: 1.8rem;
+    display: none; /* 모바일에서는 스크롤 버튼 숨김 */
   }
 }
 
-/* 작은 모바일 화면 대응 */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+  .home-container {
+    margin-top: 50px;
+    padding: 0;
+  }
+
   .banner-section {
-    height: 40vh;
+    height: 60vh;
+    padding: 0;
+    background-position: top center;
+  }
+
+  .banner-content {
+    left: 0;
+    bottom: 0;
+    max-width: 100%;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 100%);
   }
 
   .banner-title {
     font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .banner-overview {
+    font-size: 0.9rem;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .banner-buttons {
@@ -471,9 +386,84 @@ body {
   }
 
   .banner-buttons button {
-    padding: 0.5rem 1rem;
+    flex: 1;
+    padding: 0.7rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .movie-section {
+    margin-bottom: 20px;
+  }
+
+  .movie-section h2 {
+    font-size: 1.2rem;
+    padding: 0 15px;
+    margin: 10px 0;
+  }
+
+  .movie-row {
+    padding: 10px 15px;
+    gap: 8px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .movie-card {
+    width: 110px;
+    scroll-snap-align: start;
+  }
+
+  .movie-poster {
+    height: 165px;
+    border-radius: 6px;
+  }
+
+  .movie-info {
+    padding: 8px;
+    background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
+  }
+
+  .movie-info h3 {
     font-size: 0.8rem;
-    margin-right: 0;
+    margin-bottom: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .movie-overview {
+    display: none; /* 모바일에서는 overview 숨김 */
+  }
+
+  .movie-details {
+    font-size: 0.7rem;
+  }
+
+  .wish-button {
+    width: 24px;
+    height: 24px;
+    top: 4px;
+    right: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner-section {
+    height: 50vh;
+  }
+
+  .banner-content {
+    padding: 15px;
+  }
+
+  .banner-title {
+    font-size: 1.3rem;
+  }
+
+  .banner-buttons button {
+    padding: 0.6rem;
+    font-size: 0.8rem;
   }
 
   .movie-card {
@@ -484,20 +474,34 @@ body {
     height: 150px;
   }
 
-  .movie-info h3 {
-    font-size: 0.8rem;
+  /* 스크롤 성능 최적화 */
+  .movie-row {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    padding: 10px;
   }
 
-  .movie-overview {
-    -webkit-line-clamp: 1;
+  .movie-card {
+    scroll-snap-align: start;
+  }
+}
+
+/* 가로 모드 대응 */
+@media (max-width: 896px) and (orientation: landscape) {
+  .banner-section {
+    height: 100vh;
   }
 
-  .scroll-button {
-    width: 25px;
-    height: 50px;
+  .movie-row {
+    padding: 10px;
   }
 
-  .scroll-button .arrow {
-    font-size: 1.5rem;
+  .movie-card {
+    width: 120px;
+  }
+
+  .movie-poster {
+    height: 180px;
   }
 }

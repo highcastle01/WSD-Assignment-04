@@ -664,3 +664,146 @@ body {
     cursor: not-allowed;
     border-color: rgba(255, 255, 255, 0.05);
 }
+
+/* 모바일 최적화 스타일 */
+@media (max-width: 768px) {
+    .search-header {
+      position: sticky;
+      top: 60px;
+      background: #141414;
+      padding: 10px;
+      z-index: 100;
+    }
+  
+    .search-filters {
+      flex-direction: column;
+      gap: 8px;
+    }
+  
+    .search-input-container {
+      width: 100%;
+    }
+  
+    .search-input,
+    .filter-select {
+      width: 100%;
+      height: 40px;
+      font-size: 14px;
+    }
+  
+    .reset-button {
+      width: 100%;
+      height: 40px;
+    }
+  
+    .genre-filters {
+      display: flex;
+      overflow-x: auto;
+      padding: 10px 0;
+      gap: 8px;
+      -webkit-overflow-scrolling: touch;
+    }
+  
+    .genre-button {
+      flex: 0 0 auto;
+      font-size: 12px;
+      padding: 6px 10px;
+      white-space: nowrap;
+    }
+  
+    .movies-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      padding: 10px 0;
+    }
+  
+    .movie-card {
+      height: auto;
+    }
+  
+    .movie-poster {
+      height: 180px;
+    }
+  
+    .movie-info {
+      position: static;
+      opacity: 1;
+      padding: 8px;
+      background: linear-gradient(to top, #141414, transparent);
+    }
+  
+    .movie-info h3 {
+      font-size: 13px;
+      margin: 4px 0;
+      -webkit-line-clamp: 2;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  
+    .movie-overview {
+      display: none;
+    }
+  
+    .movie-details {
+      font-size: 11px;
+    }
+  
+    .wish-button {
+      width: 28px;
+      height: 28px;
+      top: 5px;
+      right: 5px;
+    }
+  
+    .pagination {
+      padding: 15px 0;
+      gap: 5px;
+    }
+  
+    .pagination-button {
+      padding: 8px;
+      min-width: 35px;
+      font-size: 12px;
+    }
+  }
+  
+  /* 작은 모바일 화면 */
+  @media (max-width: 480px) {
+    .movies-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+  
+    .movie-poster {
+      height: 150px;
+    }
+  
+    .movie-info h3 {
+      font-size: 12px;
+    }
+  
+    .movie-details {
+      font-size: 10px;
+    }
+  
+    .recent-searches {
+      max-height: 200px;
+      overflow-y: auto;
+    }
+  
+    .recent-search-item {
+      padding: 8px 12px;
+    }
+  }
+  
+  /* 가로 모드 대응 */
+  @media (max-width: 896px) and (orientation: landscape) {
+    .movies-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  
+    .movie-poster {
+      height: 160px;
+    }
+  }

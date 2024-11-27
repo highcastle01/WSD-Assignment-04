@@ -220,3 +220,166 @@ body {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* 기본 스타일 유지 후 모바일 최적화 추가 */
+@media (max-width: 1024px) {
+  .wishlist-container {
+    padding: 10px;
+    margin-top: 60px;
+  }
+
+  .controls {
+    padding: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+    padding: 0 15px;
+  }
+
+  .movie-poster {
+    height: 240px;
+  }
+}
+
+@media (max-width: 768px) {
+  .controls {
+    padding: 10px;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .view-controls, .sort-controls {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .view-controls button, .sort-controls button {
+    flex: 1;
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 0 10px;
+  }
+
+  .movie-card {
+    height: auto;
+  }
+
+  .movie-poster {
+    height: 200px;
+  }
+
+  .movie-info {
+    position: static;
+    opacity: 1;
+    background: linear-gradient(to top, #141414, transparent);
+    padding: 8px;
+  }
+
+  .movie-info h3 {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .movie-overview {
+    display: none;
+  }
+
+  .movie-details {
+    font-size: 12px;
+  }
+
+  /* 테이블 뷰 모바일 최적화 */
+  .movie-table {
+    width: 100%;
+    margin: 0;
+  }
+
+  .movie-table th,
+  .movie-table td {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .table-poster {
+    width: 60px;
+    height: 90px;
+  }
+
+  .pagination {
+    margin-top: 15px;
+    padding: 15px 0;
+    gap: 5px;
+  }
+
+  .page-button {
+    padding: 8px;
+    min-width: 35px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .movie-poster {
+    height: 180px;
+  }
+
+  .movie-info h3 {
+    font-size: 12px;
+  }
+
+  .movie-details {
+    font-size: 11px;
+  }
+
+  .wish-button {
+    width: 28px;
+    height: 28px;
+    top: 5px;
+    right: 5px;
+  }
+
+  .unwish-button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  /* 테이블 뷰 스크롤 */
+  .list-view-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .movie-table {
+    min-width: 500px;
+  }
+
+  .table-poster {
+    width: 50px;
+    height: 75px;
+  }
+}
+
+/* 가로 모드 대응 */
+@media (max-width: 896px) and (orientation: landscape) {
+  .card-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .movie-poster {
+    height: 160px;
+  }
+}
