@@ -15,11 +15,15 @@ const HomeForm: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-      // 페이지 진입 시 한 번만 실행
-      if (/Mobi|Android/i.test(navigator.userAgent)) {
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+      const hasRefreshed = sessionStorage.getItem('hasRefreshed');
+      
+      if (!hasRefreshed) {
+        sessionStorage.setItem('hasRefreshed', 'true');
         window.location.reload();
       }
-    }, [location.pathname]);
+    }
+  }, [location.pathname]);
 
   const trendingRowRef = useRef<HTMLDivElement>(null);
   const popularRowRef = useRef<HTMLDivElement>(null);
