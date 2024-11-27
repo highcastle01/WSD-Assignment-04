@@ -76,9 +76,15 @@ const WishlistForm: React.FC = () => {
                         ❤️
                     </div>
                     <img 
-                        src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                        src={movie.poster_path 
+                            ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
+                            : '/bean.png'
+                        }
                         alt={movie.title}
                         className="movie-poster"
+                        onError={(e) => {
+                            e.currentTarget.src = '/bean.png';
+                        }}
                     />
                     <div className="movie-info">
                         <h3>{movie.title}</h3>

@@ -329,7 +329,17 @@ const SearchForm: React.FC = () => {
             <div className="wish-button" onClick={() => handleWishClick(movie)}>
               {isMovieWished(movie.id) ? '❤️' : '🤍'}
             </div>
-            <img src={`${BASE_IMAGE_URL}${movie.poster_path}`} alt={movie.title} className="movie-poster" />
+            <img 
+              src={movie.poster_path 
+                ? `${BASE_IMAGE_URL}${movie.poster_path}` 
+                : '/public/bean.png'
+              } 
+              alt={movie.title}
+              className="movie-poster"
+              onError={(e) => {
+                e.currentTarget.src = '/public/bean.png';
+              }}
+            />
             <div className="movie-info">
               <h3>{movie.title}</h3>
               <p className="movie-overview">{movie.overview}</p>
