@@ -201,7 +201,7 @@
   }
 
   .header-right {
-    gap: 15px;
+    gap: 0px;
   }
 
   .icon-button {
@@ -229,7 +229,7 @@
   }
 
   .header-right {
-    gap: 10px;
+    gap: 0px;
   }
 
   .icon-button {
