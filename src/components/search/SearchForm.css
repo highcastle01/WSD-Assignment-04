@@ -13,6 +13,7 @@ body {
     width: calc(100% - 60px);
     box-sizing: border-box;
     margin-left: auto;
+    z-index: 1;
 }
 
 .search-header {
@@ -20,7 +21,7 @@ body {
     top: 64px;
     background-color: #141414;
     padding: 20px 0;
-    z-index: 100;
+    z-index: 1;
 }
 
 /* 검색 필터 스타일 개선 */
