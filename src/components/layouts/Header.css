@@ -189,7 +189,7 @@
     transition: top 0.3s ease;
     margin: 0;
     box-sizing: border-box;
-    z-index: 99;
+    z-index: 100;
   }
 
   .header-nav.mobile-active {
@@ -352,7 +352,7 @@ body.menu-open {
     transition: top 0.3s ease;
     margin: 0;
     box-sizing: border-box;
-    z-index: 99;
+    z-index: 100;
   }
 
   .header-nav.mobile-active {
