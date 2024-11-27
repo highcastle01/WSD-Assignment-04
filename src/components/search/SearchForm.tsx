@@ -11,7 +11,6 @@ interface Genre {
 }
 
 const SearchForm: React.FC = () => {
-  // 기존 상태
   const [movies, setMovies] = useState<Movie[]>([]);
   const [genres, setGenres] = useState<Genre[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -19,23 +18,18 @@ const SearchForm: React.FC = () => {
   const [sortBy, setSortBy] = useState<'popularity' | 'rating' | 'date'>('popularity');
   const [yearRange, setYearRange] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [viewMode, setViewMode] = useState<'infinite' | 'pagination'>('infinite');
+  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-
-  // 최근 검색어 관련 상태 추가
+  const [viewMode, setViewMode] = useState<'infinite' | 'pagination'>('pagination');
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [showRecentSearches, setShowRecentSearches] = useState(false);
 
   const { handleWishClick, isMovieWished } = useWishlist();
-  const observer = useRef<IntersectionObserver>();
-  const lastMovieRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const TMDB_API_KEY = localStorage.getItem('TMDb-Key');
   const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/w300';
-  const moviesPerPage = 8;
+  const ITEMS_PER_PAGE = 20;
 
   const yearOptions = [
     { value: '-1950', label: '1950년 이전' },
@@ -51,7 +45,6 @@ const SearchForm: React.FC = () => {
     { value: '2020-', label: '2020년 이후' }
   ];
 
-  // 최근 검색어 로드
   useEffect(() => {
     const savedSearches = localStorage.getItem('recentSearches');
     if (savedSearches) {
@@ -59,15 +52,12 @@ const SearchForm: React.FC = () => {
     }
   }, []);
 
-  // 최근 검색어 저장 함수
   const saveSearch = (query: string) => {
     if (!query.trim()) return;
-    
     const updatedSearches = [
       query,
       ...recentSearches.filter(item => item !== query)
     ].slice(0, 5);
-    
     setRecentSearches(updatedSearches);
     localStorage.setItem('recentSearches', JSON.stringify(updatedSearches));
   };
@@ -78,7 +68,6 @@ const SearchForm: React.FC = () => {
     localStorage.setItem('recentSearches', JSON.stringify(updatedSearches));
   };
 
-  // 기존 useEffect - 장르 불러오기
   useEffect(() => {
     const fetchGenres = async () => {
       try {
@@ -94,15 +83,14 @@ const SearchForm: React.FC = () => {
     fetchGenres();
   }, []);
 
-  // 영화 데이터 불러오기
   const fetchMovies = async (resetMovies = false) => {
     if (isLoading) return;
     setIsLoading(true);
 
     try {
       let url = searchQuery
-        ? `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&language=ko-KR&query=${searchQuery}&page=${resetMovies ? 1 : page}`
-        : `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=ko-KR&page=${resetMovies ? 1 : page}`;
+        ? `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&language=ko-KR&query=${searchQuery}&page=${resetMovies ? 1 : currentPage}`
+        : `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=ko-KR&page=${resetMovies ? 1 : currentPage}`;
 
       if (selectedGenres.length > 0) {
         url += `&with_genres=${selectedGenres.join(',')}`;
@@ -134,21 +122,11 @@ const SearchForm: React.FC = () => {
 
       const response = await axios.get(url);
       const newMovies = response.data.results;
-
-      setTotalPages(Math.ceil(response.data.total_results / moviesPerPage));
-
-      if (viewMode === 'pagination') {
-        setMovies(newMovies.slice(0, moviesPerPage));
-      } else {
-        setMovies(prev => resetMovies ? newMovies : [...prev, ...newMovies]);
-      }
-
-      setHasMore(newMovies.length > 0);
+      setTotalPages(Math.ceil(response.data.total_results / ITEMS_PER_PAGE));
+      setMovies(newMovies);
 
       if (resetMovies) {
-        setPage(1);
-      } else {
-        setPage(prev => prev + 1);
+        setCurrentPage(1);
       }
     } catch (error) {
       console.error('Error fetching movies:', error);
@@ -158,64 +136,30 @@ const SearchForm: React.FC = () => {
     }
   };
 
-  // 무한 스크롤 관련 useEffect
-  useEffect(() => {
-    if (viewMode === 'infinite') {
-      if (!hasMore || isLoading) return;
-
-      const options = {
-        root: null,
-        rootMargin: '20px',
-        threshold: 0.1
-      };
-
-      observer.current = new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting && hasMore) {
-          fetchMovies();
-        }
-      }, options);
-
-      if (lastMovieRef.current) {
-        observer.current.observe(lastMovieRef.current);
-      }
-
-      return () => {
-        if (observer.current) {
-          observer.current.disconnect();
-        }
-      };
-    }
-  }, [hasMore, isLoading, viewMode, page]);
-
-  // 검색 조건 변경 시 새로운 검색
   useEffect(() => {
     setMovies([]);
-    setPage(1);
     fetchMovies(true);
-  }, [searchQuery, selectedGenres, sortBy, yearRange, viewMode]);
+  }, [searchQuery, selectedGenres, sortBy, yearRange]);
 
-  // 페이지네이션 모드에서 페이지 변경 시
-  useEffect(() => {
-    if (viewMode === 'pagination' && page > 1) {
-      fetchMovies(true);
-    }
-  }, [page]);
-
-  // 필터 초기화
   const resetFilters = () => {
     setSelectedGenres([]);
     setSortBy('popularity');
     setYearRange('');
     setSearchQuery('');
-    setPage(1);
+    setCurrentPage(1);
     fetchMovies(true);
   };
 
-  // 페이지네이션 컴포넌트
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    window.scrollTo(0, 0);
+    fetchMovies();
+  };
+
   const Pagination = () => {
     const maxPages = 5;
     const halfMaxPages = Math.floor(maxPages / 2);
-    let startPage = Math.max(1, page - halfMaxPages);
+    let startPage = Math.max(1, currentPage - halfMaxPages);
     const endPage = Math.min(totalPages, startPage + maxPages - 1);
 
     if (endPage - startPage + 1 < maxPages) {
@@ -231,38 +175,38 @@ const SearchForm: React.FC = () => {
       <div className="pagination">
         <button
           className="pagination-button"
-          onClick={() => setPage(1)}
-          disabled={page === 1}
+          onClick={() => handlePageChange(1)}
+          disabled={currentPage === 1}
         >
           {'<<'}
         </button>
         <button
           className="pagination-button"
-          onClick={() => setPage(prev => prev - 1)}
-          disabled={page === 1}
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
         >
           {'<'}
         </button>
         {pageNumbers.map(pageNum => (
           <button
             key={pageNum}
-            onClick={() => setPage(pageNum)}
-            className={`pagination-button ${page === pageNum ? 'active' : ''}`}
+            onClick={() => handlePageChange(pageNum)}
+            className={`pagination-button ${currentPage === pageNum ? 'active' : ''}`}
           >
             {pageNum}
           </button>
         ))}
         <button
           className="pagination-button"
-          onClick={() => setPage(prev => prev + 1)}
-          disabled={page === totalPages}
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
         >
           {'>'}
         </button>
         <button
           className="pagination-button"
-          onClick={() => setPage(totalPages)}
-          disabled={page === totalPages}
+          onClick={() => handlePageChange(totalPages)}
+          disabled={currentPage === totalPages}
         >
           {'>>'}
         </button>
@@ -278,13 +222,13 @@ const SearchForm: React.FC = () => {
             className={`view-mode-button ${viewMode === 'infinite' ? 'active' : ''}`}
             onClick={() => setViewMode('infinite')}
           >
-            무한 스크롤
+            ♾️
           </button>
           <button
             className={`view-mode-button ${viewMode === 'pagination' ? 'active' : ''}`}
             onClick={() => setViewMode('pagination')}
           >
-            페이지네이션
+            📊
           </button>
         </div>
         <div className="search-filters">
@@ -311,7 +255,7 @@ const SearchForm: React.FC = () => {
               <div className="recent-searches">
                 {recentSearches.map((search, index) => (
                   <div key={index} className="recent-search-item">
-                    <div 
+                    <div
                       className="search-text"
                       onClick={() => {
                         setSearchQuery(search);
@@ -322,7 +266,7 @@ const SearchForm: React.FC = () => {
                       <span className="search-icon">🔍</span>
                       {search}
                     </div>
-                    <button 
+                    <button
                       className="delete-search"
                       onClick={(e) => {
                         e.stopPropagation();
@@ -380,16 +324,9 @@ const SearchForm: React.FC = () => {
         </div>
       </div>
       <div className="movies-grid">
-        {movies.map((movie, index) => (
-          <div
-            key={movie.id}
-            className="movie-card"
-            ref={viewMode === 'infinite' && index === movies.length - 1 ? lastMovieRef : null}
-          >
-            <div
-              className="wish-button"
-              onClick={() => handleWishClick(movie)}
-            >
+        {movies.map((movie) => (
+          <div key={movie.id} className="movie-card">
+            <div className="wish-button" onClick={() => handleWishClick(movie)}>
               {isMovieWished(movie.id) ? '❤️' : '🤍'}
             </div>
             <img
@@ -409,9 +346,7 @@ const SearchForm: React.FC = () => {
         ))}
       </div>
       {viewMode === 'pagination' && <Pagination />}
-      {viewMode === 'infinite' && isLoading && (
-        <div className="loading">Loading...</div>
-      )}
+      {isLoading && <div className="loading">Loading...</div>}
     </div>
   );
 };

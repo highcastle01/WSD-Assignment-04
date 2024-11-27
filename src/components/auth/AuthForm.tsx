@@ -60,7 +60,6 @@ const AuthForm: React.FC = () => {
         localStorage.setItem('TMDb-Key', user.password);
         localStorage.setItem('currentUser', JSON.stringify(user));
         toast.success('로그인에 성공하였습니다.');
-        navigate('/wsd-assignment-02');
         window.location.reload();
       } else {
         toast.error('이메일 또는 비밀번호가 일치하지 않습니다.');

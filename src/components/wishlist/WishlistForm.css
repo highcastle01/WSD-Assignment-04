@@ -1,169 +1,222 @@
+/* WishlistForm.css */
 body {
-    margin: 0;
-    padding: 0;
-    background-color: #141414;
-  }
+  margin: 0;
+  padding: 0;
+  background-color: #141414;
+}
 
 .wishlist-container {
-    padding: 20px;
-    background-color: #141414;
-    min-height: 100vh;
-    margin-top: 80px;
-    color: white;
-  }
-  
-  .controls {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 60px;
-    margin-bottom: 30px;
-  }
-  
-  .view-controls, .sort-controls {
-    display: flex;
-    gap: 15px;
-  }
-  
-  .view-controls button, .sort-controls button {
-    padding: 8px 16px;
-    background: rgba(109, 109, 110, 0.7);
-    border: none;
-    border-radius: 4px;
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .view-controls button.active, .sort-controls button.active {
-    background-color: #e50914;
-  }
-  
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 0 60px;
-  }
-  
-  .movie-card {
-    position: relative;
-    transition: transform 0.3s ease;
-  }
-  
-  .movie-card:hover {
-    transform: scale(1.05);
-    z-index: 2;
-  }
-  
-  .poster-container {
-    position: relative;
-    cursor: pointer;
-  }
-  
-  .movie-poster {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 4px;
-  }
-  
-  .unwish-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    color: white;
-    font-size: 1.1rem;
-    border-radius: 4px;
-  }
-  
-  .poster-container:hover .unwish-overlay {
-    opacity: 1;
-  }
-  
-  .movie-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-    padding: 10px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  .movie-card:hover .movie-info {
-    opacity: 1;
-  }
-  
-  .movie-info h3 {
-    font-size: 1rem;
-    margin-bottom: 8px;
-  }
-  
-  .movie-overview {
-    font-size: 0.8rem;
-    margin-bottom: 8px;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  .movie-details {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8rem;
-  }
-  
-  .rating {
-    color: #ffd700;
-  }
-  
-  .release-date {
-    color: #aaa;
-  }
-  
-  /* 목록형 스타일 */
-  .movie-table {
-    width: calc(100% - 120px);
-    margin: 0 60px;
-    border-collapse: collapse;
-    background: rgba(0, 0, 0, 0.3);
-  }
-  
-  .movie-table th,
-  .movie-table td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .table-poster {
-    width: 80px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 4px;
-  }
-  
-  .unwish-button {
-    padding: 8px 16px;
-    background: #e50914;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .unwish-button:hover {
-    background: #ff0f1f;
-    transform: scale(1.05);
-  }
+  padding: 20px;
+  background-color: #141414;
+  min-height: 100vh;
+  margin-top: 80px;
+  color: white;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 60px;
+  margin-bottom: 30px;
+}
+
+.view-controls, .sort-controls {
+  display: flex;
+  gap: 15px;
+}
+
+.view-controls button, .sort-controls button {
+  padding: 8px 16px;
+  background: rgba(109, 109, 110, 0.7);
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.view-controls button.active, .sort-controls button.active {
+  background-color: #e50914;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 0 60px;
+}
+
+.movie-card {
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+  z-index: 2;
+}
+
+.movie-poster {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.movie-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  padding: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.movie-card:hover .movie-info {
+  opacity: 1;
+}
+
+.movie-info h3 {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.movie-overview {
+  font-size: 0.8rem;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.movie-details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+
+.rating {
+  color: #ffd700;
+}
+
+.release-date {
+  color: #aaa;
+}
+
+/* 목록형 스타일 */
+.list-view-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.movie-table {
+  width: calc(100% - 80px);  /* 전체 여백 감소 */
+  margin: 0 40px;  /* 좌우 여백을 60px에서 40px로 감소 */
+  border-collapse: collapse;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.movie-table th,
+.movie-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.table-poster {
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.unwish-button {
+  padding: 8px 16px;
+  background: #e50914;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.unwish-button:hover {
+  background: #ff0f1f;
+  transform: scale(1.05);
+}
+
+/* 페이지네이션 스타일 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 20px 0;
+}
+
+.page-button {
+  padding: 8px 16px;
+  background: rgba(109, 109, 110, 0.7);
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 40px;
+}
+
+.page-button:hover {
+  background-color: rgba(229, 9, 20, 0.8);
+}
+
+.page-button.active {
+  background-color: #e50914;
+}
+
+.wish-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 20px 0;
+}
+
+.page-button {
+  padding: 8px 16px;
+  background: rgba(109, 109, 110, 0.7);
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 40px;
+}
+
+.page-button:hover:not(:disabled) {
+  background-color: rgba(229, 9, 20, 0.8);
+}
+
+.page-button.active {
+  background-color: #e50914;
+}
+
+.page-button.nav-button {
+  background: rgba(109, 109, 110, 0.5);
+}
+
+.page-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

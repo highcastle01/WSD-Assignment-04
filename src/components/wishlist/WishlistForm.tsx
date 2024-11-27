@@ -1,3 +1,4 @@
+// WishlistForm.tsx
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import './WishlistForm.css';
@@ -10,7 +11,9 @@ const WishlistForm: React.FC = () => {
     const [movies, setMovies] = useState<WishlistMovie[]>([]);
     const [viewType, setViewType] = useState<ViewType>('card');
     const [sortType, setSortType] = useState<SortType>('wished');
-    
+    const [currentPage, setCurrentPage] = useState(1);
+    const moviesPerPage = 5;
+
     useEffect(() => {
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
         const wishlist: WishlistMovie[] = JSON.parse(localStorage.getItem('wishlist') || '[]');
@@ -48,14 +51,16 @@ const WishlistForm: React.FC = () => {
         setMovies(sorted);
     };
 
+    const indexOfLastMovie = currentPage * moviesPerPage;
+    const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
+    const currentMovies = movies.slice(indexOfFirstMovie, indexOfLastMovie);
+    const totalPages = Math.ceil(movies.length / moviesPerPage);
+
     const CardView = () => (
         <div className="card-grid">
             {movies.map(movie => (
                 <div key={movie.id} className="movie-card">
-                    <div 
-                        className="wish-button"
-                        onClick={() => handleUnwish(movie.id)}
-                    >
+                    <div className="wish-button" onClick={() => handleUnwish(movie.id)}>
                         ❤️
                     </div>
                     <img 
@@ -77,44 +82,107 @@ const WishlistForm: React.FC = () => {
     );
 
     const ListView = () => (
-        <table className="movie-table">
-            <thead>
-                <tr>
-                    <th>포스터</th>
-                    <th>제목</th>
-                    <th>개봉일</th>
-                    <th>평점</th>
-                    <th>찜한 날짜</th>
-                    <th>찜 해제</th>
-                </tr>
-            </thead>
-            <tbody>
-                {movies.map(movie => (
-                    <tr key={movie.id}>
-                        <td>
-                            <img 
-                                src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-                                alt={movie.title}
-                                className="table-poster"
-                            />
-                        </td>
-                        <td>{movie.title}</td>
-                        <td>{movie.release_date}</td>
-                        <td>⭐ {(movie?.vote_average ?? 0).toFixed(1)}</td>
-                        <td>{new Date(movie.createdAt).toLocaleDateString()}</td>
-                        <td>
-                            <button 
-                                className="unwish-button"
-                                onClick={() => handleUnwish(movie.id)}
-                            >
-                                ❌ 찜 해제
-                            </button>
-                        </td>
+        <div className="list-view-container">
+            <table className="movie-table">
+                <thead>
+                    <tr>
+                        <th>포스터</th>
+                        <th>제목</th>
+                        <th>개봉일</th>
+                        <th>평점</th>
+                        <th>찜한 날짜</th>
+                        <th>찜 해제</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {currentMovies.map(movie => (
+                        <tr key={movie.id}>
+                            <td>
+                                <img 
+                                    src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                                    alt={movie.title}
+                                    className="table-poster"
+                                />
+                            </td>
+                            <td>{movie.title}</td>
+                            <td>{movie.release_date}</td>
+                            <td>⭐ {(movie?.vote_average ?? 0).toFixed(1)}</td>
+                            <td>{new Date(movie.createdAt).toLocaleDateString()}</td>
+                            <td>
+                                <button 
+                                    className="unwish-button"
+                                    onClick={() => handleUnwish(movie.id)}
+                                >
+                                    ❌ 찜 해제
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <Pagination />
+        </div>
     );
+
+    const Pagination = () => {
+        const maxPages = 5;
+        const halfMaxPages = Math.floor(maxPages / 2);
+        let startPage = Math.max(1, currentPage - halfMaxPages);
+        const endPage = Math.min(totalPages, startPage + maxPages - 1);
+        
+        if (endPage - startPage + 1 < maxPages) {
+            startPage = Math.max(1, endPage - maxPages + 1);
+        }
+        
+        const pageNumbers = Array.from(
+            { length: endPage - startPage + 1 }, 
+            (_, i) => startPage + i
+        );
+    
+        return (
+            <div className="pagination">
+                <button 
+                    className="pagination-button"
+                    onClick={() => setCurrentPage(1)}
+                    disabled={currentPage === 1}
+                >
+                    {'<<'}
+                </button>
+                <button 
+                    className="pagination-button"
+                    onClick={() => setCurrentPage(prev => prev - 1)}
+                    disabled={currentPage === 1}
+                >
+                    {'<'}
+                </button>
+                
+                {pageNumbers.map(pageNum => (
+                    <button
+                        key={pageNum}
+                        onClick={() => setCurrentPage(pageNum)}
+                        className={`pagination-button ${currentPage === pageNum ? 'active' : ''}`}
+                    >
+                        {pageNum}
+                    </button>
+                ))}
+                
+                <button 
+                    className="pagination-button"
+                    onClick={() => setCurrentPage(prev => prev + 1)}
+                    disabled={currentPage === totalPages}
+                >
+                    {'>'}
+                </button>
+                <button 
+                    className="pagination-button"
+                    onClick={() => setCurrentPage(totalPages)}
+                    disabled={currentPage === totalPages}
+                >
+                    {'>>'}
+                </button>
+            </div>
+        );
+    };
 
     return (
         <div className="wishlist-container">
