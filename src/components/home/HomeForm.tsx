@@ -21,6 +21,12 @@ const HomeForm: React.FC = () => {
 
   const { handleWishClick, isMovieWished } = useWishlist();
 
+  const handlePlayClick = (movieTitle: string) => {
+    const searchQuery = encodeURIComponent(`${movieTitle} 공식 예고편`);
+    const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${searchQuery}`;
+    window.open(youtubeSearchUrl, '_blank');
+  };  
+
   useEffect(() => {
     const fetchMovies = async () => {
       try {
@@ -208,7 +214,12 @@ const HomeForm: React.FC = () => {
               </div>
             )}
             <div className="banner-buttons">
-              <button className="play-button">재생</button>
+            <button 
+              className="play-button" 
+              onClick={() => bannerMovie && handlePlayClick(bannerMovie.title)}
+            >
+              재생
+            </button>
               <button className="info-button" onClick={() => setShowDetails(!showDetails)}>
                 {showDetails ? '간략히' : '상세 정보'}
               </button>
