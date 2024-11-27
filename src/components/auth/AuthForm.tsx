@@ -161,6 +161,7 @@ const AuthForm: React.FC = () => {
               />
               <label>로그인 정보 저장하기</label>
             </div>
+            <div className="signup-hint">회원가입이 필요하면 + 버튼을 눌러주세요</div> 
             <div className="button-container">
                 <button>
                     <span>로그인</span>

@@ -311,7 +311,7 @@ body {
 @media (max-width: 768px) {
     /* 뷰 모드 컨트롤 여백 수정 */
     .view-mode-controls {
-      margin: 85px 0 20px 0;  /* 헤더와 겹치지 않도록 상단 여백 증가 */
+      margin: 70px 0 20px 0;  /* 헤더와 겹치지 않도록 상단 여백 증가 */
     }
   
     /* 무한 스크롤 최적화 */
@@ -347,6 +347,7 @@ body {
       margin: 0;
       padding: 0;
       border-radius: 8px;
+      overflow-x: auto; 
     }
   
     .movie-table {
