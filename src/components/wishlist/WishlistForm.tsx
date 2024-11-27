@@ -216,7 +216,7 @@ const WishlistForm: React.FC = () => {
                         className={viewType === 'list' ? 'active' : ''}
                         onClick={() => setViewType('list')}
                     >
-                        목록형
+                        테이블뷰
                     </button>
                 </div>
                 <div className="sort-controls">

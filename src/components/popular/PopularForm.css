@@ -309,6 +309,11 @@ body {
 }
 
 @media (max-width: 768px) {
+    /* 뷰 모드 컨트롤 여백 수정 */
+    .view-mode-controls {
+      margin: 85px 0 20px 0;  /* 헤더와 겹치지 않도록 상단 여백 증가 */
+    }
+  
     /* 무한 스크롤 최적화 */
     .movies-grid {
       display: grid;
@@ -354,22 +359,22 @@ body {
     .movie-table th,
     .movie-table td {
       padding: 6px 4px;
-      font-size: 12px;
+      font-size: 11px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
   
     /* 테이블 열 너비 최적화 */
-    .movie-table td:nth-child(1) { width: 35px; }  /* 포스터 */
+    .movie-table td:nth-child(1) { width: 30px; }  /* 포스터 */
     .movie-table td:nth-child(2) { width: 35%; }   /* 제목 */
-    .movie-table td:nth-child(3) { width: 60px; }  /* 개봉일 */
-    .movie-table td:nth-child(4) { width: 40px; }  /* 평점 */
-    .movie-table td:nth-child(5) { width: 35px; }  /* 찜하기 */
+    .movie-table td:nth-child(3) { width: 55px; }  /* 개봉일 */
+    .movie-table td:nth-child(4) { width: 35px; }  /* 평점 */
+    .movie-table td:nth-child(5) { width: 30px; }  /* 찜하기 */
   
     .table-poster {
-      width: 30px;
-      height: 45px;
+      width: 25px;
+      height: 38px;
       border-radius: 3px;
     }
   }
@@ -394,18 +399,18 @@ body {
     .movie-table th,
     .movie-table td {
       padding: 4px 2px;
-      font-size: 11px;
+      font-size: 10px;
     }
   
     .table-poster {
-      width: 25px;
-      height: 38px;
+      width: 20px;
+      height: 30px;
     }
   
     /* 더 작은 화면에서의 테이블 열 너비 미세 조정 */
-    .movie-table td:nth-child(1) { width: 30px; }
+    .movie-table td:nth-child(1) { width: 25px; }
     .movie-table td:nth-child(2) { width: 30%; }
-    .movie-table td:nth-child(3) { width: 55px; }
-    .movie-table td:nth-child(4) { width: 35px; }
-    .movie-table td:nth-child(5) { width: 30px; }
+    .movie-table td:nth-child(3) { width: 50px; }
+    .movie-table td:nth-child(4) { width: 30px; }
+    .movie-table td:nth-child(5) { width: 25px; }
   }

@@ -202,7 +202,7 @@ const PopularForm: React.FC = () => {
           className={`view-mode-button ${viewMode === 'table' ? 'active' : ''}`}
           onClick={() => handleViewModeChange('table')}
         >
-          테이블 뷰
+          테이블뷰
         </button>
       </div>
 
