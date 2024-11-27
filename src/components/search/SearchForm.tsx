@@ -23,7 +23,6 @@ const SearchForm: React.FC = () => {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [showRecentSearches, setShowRecentSearches] = useState(false);
   const { handleWishClick, isMovieWished } = useWishlist();
-  const [isFilterVisible, setIsFilterVisible] = useState(true);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const TMDB_API_KEY = localStorage.getItem('TMDb-Key');
