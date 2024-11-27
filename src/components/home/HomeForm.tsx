@@ -184,7 +184,7 @@ const HomeForm: React.FC = () => {
                 <img 
                   src={movie.poster_path 
                     ? `${BASE_IMAGE_URL}${movie.poster_path}` 
-                    : '/public/bean.png'
+                    : '/bean.png'
                   } 
                   alt={movie.title}
                   className="movie-poster"

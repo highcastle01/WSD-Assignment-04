@@ -45,8 +45,10 @@ const Header: React.FC = () => {
     <header className={`header ${isScrolled ? 'black-bg' : ''}`}>
       <div className="header-content">
         <div className="header-left">
-          <Link to="/" className="logo-text">Castle Movie</Link>
-          
+        <Link to="/" className="logo-text">
+          <img src={process.env.PUBLIC_URL + '/castle.png'} alt="성" className="castle-icon" />
+          Castle Movie
+        </Link>
           <div className="hamburger-menu" onClick={toggleMobileMenu}>
             <span className={isMobileMenuOpen ? 'active' : ''}></span>
             <span className={isMobileMenuOpen ? 'active' : ''}></span>
@@ -66,11 +68,11 @@ const Header: React.FC = () => {
           <Link to="/search" className="icon-button search-icon">🔍</Link>
           {isLoggedIn ? (
             <div onClick={handleLogout} className="icon-button profile-icon">
-              로그아웃
+              <img src={process.env.PUBLIC_URL + '/logout.png'} alt="로그아웃" className="auth-icon" />
             </div>
           ) : (
             <Link to="/signin" className="icon-button profile-icon">
-              로그인
+              <img src={process.env.PUBLIC_URL + '/login.png'} alt="로그인" className="auth-icon" />
             </Link>
           )}
         </div>
