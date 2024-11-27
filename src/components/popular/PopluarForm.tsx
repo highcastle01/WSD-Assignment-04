@@ -142,7 +142,7 @@ const PopularForm: React.FC = () => {
   };
 
   const Pagination = () => {
-    const pageRange = 3;
+    const pageRange = 5;
     const start = Math.max(1, page - Math.floor(pageRange / 2));
     const end = Math.min(totalPages, start + pageRange - 1);
     

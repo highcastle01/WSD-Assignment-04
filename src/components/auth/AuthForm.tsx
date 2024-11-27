@@ -119,7 +119,7 @@ const AuthForm: React.FC = () => {
   return (
     <>
       <div className="background-container">
-          <img src="../../../public/poster/image1.jpg" alt="" className="floating-poster" />
+          <img src={process.env.PUBLIC_URL + '/image1.jpg'} alt="" className="floating-poster" />
           <img src="/movie-poster2.jpg" alt="" className="floating-poster" />
           <img src="/movie-poster3.jpg" alt="" className="floating-poster" />
           <img src="/movie-poster4.jpg" alt="" className="floating-poster" />
