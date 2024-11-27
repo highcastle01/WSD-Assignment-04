@@ -83,6 +83,7 @@ const WishlistForm: React.FC = () => {
 
     const ListView = () => (
         <div className="list-view-container">
+            <Pagination />
             <table className="movie-table">
                 <thead>
                     <tr>
@@ -120,7 +121,6 @@ const WishlistForm: React.FC = () => {
                     ))}
                 </tbody>
             </table>
-            <Pagination />
         </div>
     );
 

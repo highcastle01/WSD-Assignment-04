@@ -242,6 +242,7 @@ const PopularForm: React.FC = () => {
             <div className="loading-overlay">Loading...</div>
           ) : (
             <>
+              <Pagination />
               <table className="movie-table">
                 <thead>
                   <tr>
@@ -277,7 +278,6 @@ const PopularForm: React.FC = () => {
                   ))}
                 </tbody>
               </table>
-              <Pagination />
             </>
           )}
         </div>
