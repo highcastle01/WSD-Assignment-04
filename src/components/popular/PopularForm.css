@@ -309,16 +309,27 @@ body {
 }
 
 @media (max-width: 768px) {
-    .top-button {
-        width: 50px;
-        height: 50px;
-        bottom: 20px;
-        right: 20px;
-        font-size: 16px;
+    /* 무한 스크롤 최적화 */
+    .movies-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 0 10px;
     }
-}
-
-@media (max-width: 768px) {
+  
+    .movie-card {
+      width: 100%;
+    }
+  
+    .movie-poster {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+  
+    /* 테이블 뷰 최적화 */
     .popular-container {
       padding: 10px;
       margin-top: 60px;
@@ -331,41 +342,47 @@ body {
       margin: 0;
       padding: 0;
       border-radius: 8px;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
     }
   
     .movie-table {
       width: 100%;
       margin: 0;
       border-collapse: collapse;
-      min-width: 500px; /* 최소 너비 설정으로 작은 화면에서도 테이블 구조 유지 */
+      table-layout: fixed;
     }
   
     .movie-table th,
     .movie-table td {
-      padding: 8px;
-      font-size: 14px;
+      padding: 6px 4px;
+      font-size: 12px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
   
     /* 테이블 열 너비 최적화 */
-    .movie-table td:nth-child(1) { width: 60px; }  /* 포스터 */
-    .movie-table td:nth-child(2) { width: 40%; }   /* 제목 */
-    .movie-table td:nth-child(3) { width: 80px; }  /* 개봉일 */
-    .movie-table td:nth-child(4) { width: 60px; }  /* 평점 */
-    .movie-table td:nth-child(5) { width: 50px; }  /* 찜하기 */
+    .movie-table td:nth-child(1) { width: 35px; }  /* 포스터 */
+    .movie-table td:nth-child(2) { width: 35%; }   /* 제목 */
+    .movie-table td:nth-child(3) { width: 60px; }  /* 개봉일 */
+    .movie-table td:nth-child(4) { width: 40px; }  /* 평점 */
+    .movie-table td:nth-child(5) { width: 35px; }  /* 찜하기 */
   
     .table-poster {
-      width: 45px;
-      height: 68px;
-      border-radius: 4px;
+      width: 30px;
+      height: 45px;
+      border-radius: 3px;
     }
   }
   
   @media (max-width: 480px) {
+    .movies-grid {
+      max-width: 300px;
+    }
+  
+    .movie-poster {
+      height: 180px;
+    }
+  
     .popular-container {
       padding: 5px;
     }
@@ -374,18 +391,21 @@ body {
       border-radius: 4px;
     }
   
-    .movie-table {
-      min-width: 450px;
+    .movie-table th,
+    .movie-table td {
+      padding: 4px 2px;
+      font-size: 11px;
     }
   
     .table-poster {
-      width: 40px;
-      height: 60px;
+      width: 25px;
+      height: 38px;
     }
   
-    .movie-table th,
-    .movie-table td {
-      padding: 6px;
-      font-size: 13px;
-    }
+    /* 더 작은 화면에서의 테이블 열 너비 미세 조정 */
+    .movie-table td:nth-child(1) { width: 30px; }
+    .movie-table td:nth-child(2) { width: 30%; }
+    .movie-table td:nth-child(3) { width: 55px; }
+    .movie-table td:nth-child(4) { width: 35px; }
+    .movie-table td:nth-child(5) { width: 30px; }
   }
