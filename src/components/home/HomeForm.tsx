@@ -1,4 +1,3 @@
-// HomeForm.tsx
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import './HomeForm.css';
@@ -184,12 +183,12 @@ const HomeForm: React.FC = () => {
                 <img 
                   src={movie.poster_path 
                     ? `${BASE_IMAGE_URL}${movie.poster_path}` 
-                    : '/bean.png'
+                    : `${process.env.PUBLIC_URL}/bean.png`
                   } 
                   alt={movie.title}
                   className="movie-poster"
                   onError={(e) => {
-                    e.currentTarget.src = '/public/bean.png';
+                    e.currentTarget.src = `${process.env.PUBLIC_URL}/bean.png`;
                   }}
                 />
                 <div className="movie-info">
