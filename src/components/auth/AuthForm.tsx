@@ -46,7 +46,6 @@ const AuthForm: React.FC = () => {
     }
   
     try {
-      // 사용자 목록에서 확인
       const users = JSON.parse(localStorage.getItem('users') || '[]');
       const user = users.find((u: any) => 
         u.email === formData.email && u.password === formData.password
@@ -60,7 +59,8 @@ const AuthForm: React.FC = () => {
         localStorage.setItem('TMDb-Key', user.password);
         localStorage.setItem('currentUser', JSON.stringify(user));
         toast.success('로그인에 성공하였습니다.');
-        window.location.reload();
+        // window.location.reload() 대신 navigate 사용
+        navigate('/', { replace: true });
       } else {
         toast.error('이메일 또는 비밀번호가 일치하지 않습니다.');
       }

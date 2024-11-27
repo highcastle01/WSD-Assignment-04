@@ -8,6 +8,7 @@ import PopluarPage from './pages/PopularPage';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './store';
+import NotFoundPage from './pages/NotFoundPage';
 
 const basename = process.env.NODE_ENV === 'development' 
   ? '/' 
@@ -95,6 +96,10 @@ const router = createBrowserRouter([
         element: <PopluarPage />
       }
     ]
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />
   }
 ], {
   basename: basename
