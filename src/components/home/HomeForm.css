@@ -325,3 +325,179 @@ body {
   position: relative;
   overflow: hidden;
 }
+
+/* 기본 스타일 유지 후 모바일 대응 추가 */
+
+/* 태블릿 대응 */
+@media (max-width: 1024px) {
+  .banner-section {
+    height: 60vh;
+    padding: 0 30px;
+  }
+
+  .banner-content {
+    left: 30px;
+    bottom: 80px;
+    max-width: 500px;
+  }
+
+  .banner-title {
+    font-size: 2.5rem;
+  }
+
+  .movie-row-container {
+    padding: 0 30px;
+  }
+
+  .movie-card {
+    width: 160px;
+  }
+
+  .movie-poster {
+    height: 240px;
+  }
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+  .home-container {
+    margin-top: 60px;
+    padding: 10px;
+  }
+
+  .banner-section {
+    height: 50vh;
+    padding: 0 15px;
+  }
+
+  .banner-content {
+    left: 15px;
+    bottom: 40px;
+    max-width: 100%;
+    padding: 15px;
+  }
+
+  .banner-title {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .banner-buttons button {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .banner-overview {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .metadata {
+    font-size: 0.9rem;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .movie-section h2 {
+    font-size: 1.2rem;
+    margin: 15px;
+  }
+
+  .movie-row-container {
+    padding: 0 15px;
+  }
+
+  .movie-row {
+    gap: 8px;
+    padding: 10px 0;
+  }
+
+  .movie-card {
+    width: 120px;
+  }
+
+  .movie-poster {
+    height: 180px;
+  }
+
+  .movie-info {
+    padding: 8px;
+  }
+
+  .movie-info h3 {
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+
+  .movie-overview {
+    font-size: 0.7rem;
+    -webkit-line-clamp: 2;
+  }
+
+  .movie-details {
+    font-size: 0.7rem;
+  }
+
+  .wish-button {
+    width: 28px;
+    height: 28px;
+    top: 5px;
+    right: 5px;
+  }
+
+  .scroll-button {
+    width: 30px;
+    height: 60px;
+  }
+
+  .scroll-button .arrow {
+    font-size: 1.8rem;
+  }
+}
+
+/* 작은 모바일 화면 대응 */
+@media (max-width: 480px) {
+  .banner-section {
+    height: 40vh;
+  }
+
+  .banner-title {
+    font-size: 1.5rem;
+  }
+
+  .banner-buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+  .banner-buttons button {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    margin-right: 0;
+  }
+
+  .movie-card {
+    width: 100px;
+  }
+
+  .movie-poster {
+    height: 150px;
+  }
+
+  .movie-info h3 {
+    font-size: 0.8rem;
+  }
+
+  .movie-overview {
+    -webkit-line-clamp: 1;
+  }
+
+  .scroll-button {
+    width: 25px;
+    height: 50px;
+  }
+
+  .scroll-button .arrow {
+    font-size: 1.5rem;
+  }
+}

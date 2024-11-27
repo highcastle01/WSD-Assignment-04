@@ -377,10 +377,142 @@ body {
   }
 }
 
-/* 모바일 대응 */
+/* 기존 스타일 유지하면서 모바일 최적화 추가 */
 @media (max-width: 480px) {
+  .container {
+    width: 95%;
+    margin: 40px auto;
+    padding: 0 10px;
+  }
+
+  .card {
+    padding: 25px 0;
+    border-radius: 10px;
+  }
+
+  .title {
+    font-size: 18px;
+    padding: 8px 0 8px 25px;
+    margin: 0 0 25px;
+    border-left: 4px solid #e50914;
+  }
+
+  .input-container {
+    margin: 0 20px 20px;
+  }
+
+  .input-container input {
+    height: 40px;
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .input-container label {
+    font-size: 13px;
+    top: -18px;
+  }
+
+  .checkbox-container {
+    margin: 0 20px 15px;
+  }
+
+  .checkbox-container label {
+    font-size: 13px;
+  }
+
+  .checkbox-container label:before {
+    width: 16px;
+    height: 16px;
+  }
+
+  .button-container {
+    margin: 0 20px;
+  }
+
+  .button-container button {
+    padding: 12px 0;
+    font-size: 15px;
+  }
+
+  /* 회원가입 토글 버튼 크기 조정 */
+  .card.alt {
+    width: 100px;
+    height: 100px;
+    right: -50px;
+  }
+
+  .card.alt .toggle {
+    width: 100px;
+    height: 100px;
+    font-size: 40px;
+    line-height: 100px;
+  }
+
+  /* 활성화된 회원가입 카드 */
+  .container.active .card.alt {
+    padding: 40px 0 30px;
+  }
+
   .container.active .card.alt .title .close {
-      right: 20px;
-      font-size: 42px;
+    right: 15px;
+    top: -5px;
+    font-size: 36px;
+  }
+
+  /* 애니메이션 미세 조정 */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* 터치 영역 최적화 */
+  .checkbox-container input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+  }
+
+  .checkbox-container label:before {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* 입력 필드 터치 최적화 */
+  .input-container input {
+    -webkit-appearance: none;
+    border-radius: 6px;
+  }
+
+  /* 버튼 터치 피드백 */
+  .button-container button:active {
+    transform: scale(0.98);
+  }
+}
+
+/* 더 작은 모바일 화면 대응 */
+@media (max-width: 360px) {
+  .container {
+    width: 100%;
+    margin: 30px auto;
+  }
+
+  .title {
+    font-size: 16px;
+    padding-left: 20px;
+  }
+
+  .input-container,
+  .checkbox-container,
+  .button-container {
+    margin: 0 15px 15px;
+  }
+
+  .input-container input {
+    font-size: 13px;
   }
 }
