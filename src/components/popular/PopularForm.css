@@ -283,130 +283,135 @@ body {
 }
 
 @media (max-width: 768px) {
+    .popular-container {
+      padding: 10px;
+      margin-top: 60px;
+    }
+  
     /* 무한스크롤 뷰 스타일 */
+    .movies-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 10px;
+    }
+  
     .movie-card {
-        position: relative;
-        display: flex;
-        height: 160px;
-        background: linear-gradient(to right, rgba(20, 20, 20, 0.95), rgba(20, 20, 20, 0.8));
-        border-radius: 8px;
-        overflow: hidden;
-      }
-    
-      .movie-poster {
-        width: 110px;
-        height: 160px;
-        flex-shrink: 0;
-        border-radius: 8px 0 0 8px;
-        object-fit: cover;
-      }
-    
-      .movie-info {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        padding: 12px;
-        margin-right: 45px;
-      }
-    
-      .movie-info h3 {
-        font-size: 16px;
-        font-weight: 600;
-        margin: 0 0 8px 0;
-        line-height: 1.3;
-        color: #fff;
-      }
-    
-      .movie-details {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-      }
-    
-      .rating {
-        font-size: 14px;
-        color: #ffd700;
-      }
-    
-      .release-date {
-        font-size: 12px;
-        color: #aaa;
-      }
-    
-      .wish-button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        width: 32px;
-        height: 32px;
-      }
-  
-    /* 테이블 뷰 스타일 */
-    .table-container {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-  
-    .movie-table {
-      table-layout: fixed;
-      width: 100%;
-      min-width: 500px;
-    }
-  
-    .movie-table th,
-    .movie-table td {
-      padding: 8px;
-      font-size: 13px;
-    }
-  
-    .movie-table td {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  
-    .movie-table td:nth-child(1) { width: 70px; }  /* 포스터 */
-    .movie-table td:nth-child(2) { width: 40%; }   /* 제목 */
-    .movie-table td:nth-child(3) { width: 15%; }   /* 별점 */
-    .movie-table td:nth-child(4) { width: 15%; }   /* 개봉일 */
-    .movie-table td:nth-child(5) { width: 70px; }  /* 찜하기 */
-  
-    .table-poster {
-      width: 60px;
-      height: 90px;
-      border-radius: 4px;
-    }
-  
-    .table-poster:hover {
-      transform: scale(1.5) translateX(20%);
-      z-index: 100;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .movie-card {
+      display: flex;
       height: 140px;
+      background: rgba(20, 20, 20, 0.95);
+      border-radius: 8px;
+      position: relative;
     }
   
     .movie-poster {
       width: 95px;
       height: 140px;
+      border-radius: 8px 0 0 8px;
+      object-fit: cover;
     }
   
-    .movie-info h3 {
+    .movie-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 12px;
+      margin-right: 45px;
+    }
+  
+    .movie-title {
+      font-size: 15px;
+      color: #fff;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+  
+    .movie-rating {
       font-size: 13px;
+      color: #ffd700;
+      margin-bottom: 6px;
     }
   
-    .movie-details {
-      font-size: 11px;
+    .movie-date {
+      font-size: 12px;
+      color: #aaa;
+    }
+  
+    .wish-button {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      width: 32px;
+      height: 32px;
+    }
+  
+    /* 테이블 뷰 스타일 */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
   
     .movie-table {
-      min-width: 450px;
+      width: 100%;
+      border-collapse: collapse;
     }
+  
+    .movie-table th,
+    .movie-table td {
+      padding: 8px;
+      text-align: left;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  
+    .movie-table td:nth-child(1) { width: 60px; }  /* 포스터 */
+    .movie-table td:nth-child(2) { width: 120px; } /* 제목 */
+    .movie-table td:nth-child(3) { width: 70px; }  /* 개봉일 */
+    .movie-table td:nth-child(4) { width: 50px; }  /* 평점 */
+    .movie-table td:nth-child(5) { width: 40px; }  /* 찜하기 */
   
     .table-poster {
       width: 50px;
       height: 75px;
+      border-radius: 4px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .movie-card {
+      height: 130px;
+    }
+  
+    .movie-poster {
+      width: 85px;
+      height: 130px;
+    }
+  
+    .movie-title {
+      font-size: 14px;
+    }
+  
+    .movie-rating {
+      font-size: 12px;
+    }
+  
+    .movie-date {
+      font-size: 11px;
+    }
+  
+    .movie-table th,
+    .movie-table td {
+      padding: 6px;
+      font-size: 12px;
+    }
+  
+    .table-poster {
+      width: 45px;
+      height: 68px;
     }
   }

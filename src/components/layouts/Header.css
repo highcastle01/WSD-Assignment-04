@@ -368,11 +368,16 @@ body.menu-open {
   }
 
   /* 햄버거 메뉴 위치 조정 */
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* 로고와 햄버거 메뉴 사이 간격 축소 */
+  }
+
   .hamburger-menu {
     display: flex;
-    margin-left: 0;
-    margin-right: 20px;
-    z-index: 101;
+    order: 2; /* 로고 다음에 오도록 설정 */
+    margin: 0; /* 기존 마진 제거 */
   }
 
   /* 메뉴 활성화시 body 스크롤 방지 */
