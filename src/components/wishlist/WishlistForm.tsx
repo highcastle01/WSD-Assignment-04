@@ -1,8 +1,8 @@
-// WishlistForm.tsx
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import './WishlistForm.css';
 import { WishlistMovie } from '../../types/movie';
+import { useLocation } from 'react-router-dom';
 
 type ViewType = 'card' | 'list';
 type SortType = 'rating' | 'release' | 'wished';
@@ -13,6 +13,14 @@ const WishlistForm: React.FC = () => {
     const [sortType, setSortType] = useState<SortType>('wished');
     const [currentPage, setCurrentPage] = useState(1);
     const moviesPerPage = 5;
+    const location = useLocation();
+
+    useEffect(() => {
+        // 페이지 진입 시 한 번만 실행
+        if (/Mobi|Android/i.test(navigator.userAgent)) {
+          window.location.reload();
+        }
+      }, [location.pathname]);
 
     useEffect(() => {
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');

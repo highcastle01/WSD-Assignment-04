@@ -4,6 +4,7 @@ import axios from 'axios';
 import './HomeForm.css';
 import { Movie } from '../../types/movie';
 import { useWishlist } from '../../hooks/useWishlist';
+import { useLocation } from 'react-router-dom';
 
 const HomeForm: React.FC = () => {
   const [trendingMovies, setTrendingMovies] = useState<Movie[]>([]);
@@ -11,6 +12,14 @@ const HomeForm: React.FC = () => {
   const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>([]);
   const [bannerMovie, setBannerMovie] = useState<Movie | null>(null);
   const [showDetails, setShowDetails] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+      // 페이지 진입 시 한 번만 실행
+      if (/Mobi|Android/i.test(navigator.userAgent)) {
+        window.location.reload();
+      }
+    }, [location.pathname]);
 
   const trendingRowRef = useRef<HTMLDivElement>(null);
   const popularRowRef = useRef<HTMLDivElement>(null);

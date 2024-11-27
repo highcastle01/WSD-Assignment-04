@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import './SearchForm.css';
 import { Movie } from '../../types/movie';
 import { useWishlist } from '../../hooks/useWishlist';
+import { useLocation } from 'react-router-dom';
 
 interface Genre {
   id: number;
@@ -24,6 +25,14 @@ const SearchForm: React.FC = () => {
   const [showRecentSearches, setShowRecentSearches] = useState(false);
   const { handleWishClick, isMovieWished } = useWishlist();
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const location = useLocation();
+
+  useEffect(() => {
+      // 페이지 진입 시 한 번만 실행
+      if (/Mobi|Android/i.test(navigator.userAgent)) {
+        window.location.reload();
+      }
+    }, [location.pathname]);
 
   const TMDB_API_KEY = localStorage.getItem('TMDb-Key');
   const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/w300';

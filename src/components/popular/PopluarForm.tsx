@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import './PopularForm.css';
 import { Movie } from '../../types/movie';
 import { useWishlist } from '../../hooks/useWishlist';
+import { useLocation } from 'react-router-dom';
 
 const PopularForm: React.FC = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -13,6 +14,14 @@ const PopularForm: React.FC = () => {
   const [viewMode, setViewMode] = useState<'infinite' | 'table'>('infinite');
   const [totalPages, setTotalPages] = useState(0);
   const [loadingNewCards, setLoadingNewCards] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+      // 페이지 진입 시 한 번만 실행
+      if (/Mobi|Android/i.test(navigator.userAgent)) {
+        window.location.reload();
+      }
+    }, [location.pathname]);
 
   const { handleWishClick, isMovieWished } = useWishlist();
   const observer = useRef<IntersectionObserver>();
