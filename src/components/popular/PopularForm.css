@@ -282,24 +282,62 @@ body {
     transform: translateY(-2px);
 }
 
-/* 기본 스타일 유지 후 모바일 최적화 추가 */
 @media (max-width: 768px) {
+    /* 공통 컨테이너 스타일 */
     .popular-container {
       padding: 10px;
       width: 100%;
       margin-top: 60px;
     }
   
-    /* 테이블 뷰 모바일 최적화 */
+    /* 무한스크롤 뷰 스타일 */
+    .movies-grid {
+      display: grid;
+      grid-template-columns: minmax(auto, 400px);
+      justify-content: center;
+      gap: 20px;
+      padding: 15px;
+    }
+  
+    .movie-card {
+      width: 100%;
+      height: 160px;
+      background: linear-gradient(to right, rgba(20, 20, 20, 0.95), rgba(20, 20, 20, 0.8));
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+  
+    .movie-poster {
+      width: 110px;
+      height: 160px;
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+  
+    .movie-info {
+      flex: 1;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 1;
+      background: transparent;
+    }
+  
+    /* 테이블 뷰 스타일 */
     .table-container {
-      border-radius: 8px;
-      margin: 0;
+      width: 100%;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
+      border-radius: 8px;
     }
   
     .movie-table {
-      min-width: 600px; /* 최소 너비 설정으로 가로 스크롤 가능하게 */
+      width: 100%;
+      min-width: 500px;
     }
   
     .movie-table th,
@@ -314,63 +352,28 @@ body {
     }
   
     .table-poster:hover {
-      transform: scale(1.8) translateX(20%);
-    }
-  
-    /* 모바일에서 테이블 열 너비 조정 */
-    .movie-table th:nth-child(1),
-    .movie-table td:nth-child(1) {
-      width: 70px;
-    }
-  
-    .movie-table th:nth-child(3),
-    .movie-table td:nth-child(3),
-    .movie-table th:nth-child(4),
-    .movie-table td:nth-child(4),
-    .movie-table th:nth-child(5),
-    .movie-table td:nth-child(5) {
-      width: 80px;
-    }
-  
-    /* 찜하기 버튼 크기 조정 */
-    .wish-button,
-    .wish-button-table {
-      width: 32px;
-      height: 32px;
-      font-size: 1rem;
-    }
-  
-    /* 페이지네이션 모바일 최적화 */
-    .pagination {
-      margin: 20px 0;
-      gap: 5px;
-    }
-  
-    .pagination-button {
-      padding: 8px 12px;
-      min-width: 35px;
-      font-size: 0.9rem;
-    }
-  
-    /* Top 버튼 위치 조정 */
-    .top-button {
-      bottom: 15px;
-      right: 15px;
-      padding: 10px 15px;
-      font-size: 0.9rem;
+      transform: scale(1.5) translateX(20%);
     }
   }
   
-  /* 작은 모바일 화면 대응 */
   @media (max-width: 480px) {
-    .movie-table {
-      min-width: 450px;
+    /* 무한스크롤 뷰 스타일 */
+    .movies-grid {
+      grid-template-columns: minmax(auto, 320px);
     }
   
-    .movie-table th,
-    .movie-table td {
-      padding: 6px;
-      font-size: 0.8rem;
+    .movie-card {
+      height: 140px;
+    }
+  
+    .movie-poster {
+      width: 95px;
+      height: 140px;
+    }
+  
+    /* 테이블 뷰 스타일 */
+    .movie-table {
+      min-width: 450px;
     }
   
     .table-poster {
@@ -378,34 +381,25 @@ body {
       height: 75px;
     }
   
-    .table-poster:hover {
-      transform: scale(1.5) translateX(15%);
+    .movie-info h3 {
+      font-size: 14px;
+      -webkit-line-clamp: 2;
     }
   
-    .pagination-button {
-      padding: 6px 10px;
-      min-width: 30px;
-      font-size: 0.8rem;
-    }
-  
-    .view-mode-controls {
-      justify-content: center;
-    }
-  
-    .view-mode-button {
-      padding: 6px 12px;
-      font-size: 0.9rem;
+    .movie-overview {
+      font-size: 12px;
+      -webkit-line-clamp: 2;
     }
   }
   
-  /* 가로 모드 대응 */
+  /* 가로 모드 최적화 */
   @media (max-width: 896px) and (orientation: landscape) {
-    .popular-container {
-      margin-top: 50px;
+    .movies-grid {
+      grid-template-columns: repeat(2, minmax(auto, 300px));
     }
   
     .table-container {
-      max-height: calc(100vh - 200px);
+      max-height: calc(100vh - 150px);
       overflow-y: auto;
     }
   }
