@@ -38,7 +38,8 @@ wsd-assignment-02로 리다이렉트 됩니다. 로컬에서 실행시 이 부�
 3. **개발 서버 실행**
    ```bash
     npm run start
-   //로컬에서 실행시 지금 레포지토리가 베이스라인으로 되어있어 http://localhost:3000/wsd-assignment-02/ 이런식으로 뜨게되므로
+   //로컬에서 실행시 지금 레포지토리가 베이스라인으로 되어있어
+   //http://localhost:3000/wsd-assignment-02/ 이런식으로 뜨게되므로
    //http://localhost:3000 뒷 부분을 지워 접속시 접속이 문제없이 됩니다.
 
 ---
