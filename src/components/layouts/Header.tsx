@@ -54,7 +54,6 @@ const Header: React.FC = () => {
           </div>
 
           <nav className={`header-nav ${isMobileMenuOpen ? 'mobile-active' : ''}`}>
-            <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>홈</Link>
             <Link to="/popular" onClick={() => setIsMobileMenuOpen(false)}>대세 콘텐츠</Link>
             <Link to="/search" onClick={() => setIsMobileMenuOpen(false)}>찾아보기</Link>
             {isLoggedIn && (
@@ -65,9 +64,6 @@ const Header: React.FC = () => {
         
         <div className="header-right">
           <Link to="/search" className="icon-button search-icon">🔍</Link>
-          {isLoggedIn && (
-            <Link to="/notifications" className="icon-button notification-icon">🔔</Link>
-          )}
           {isLoggedIn ? (
             <div onClick={handleLogout} className="icon-button profile-icon">
               로그아웃
