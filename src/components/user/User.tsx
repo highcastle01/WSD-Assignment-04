@@ -3,7 +3,7 @@ import './User.css';
 
 const User = () => {
  const userInfo = JSON.parse(localStorage.getItem('kakaoUserInfo') || '{}');
- const { id, email, name } = userInfo;
+ const { id, name, email } = userInfo;
 
  return (
    <div className="user-profile">

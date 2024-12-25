@@ -43,7 +43,7 @@ const AuthForm: React.FC = () => {
       navigate('/');
     }
 
-    // Cleanup
+    //중복스크립트 방지
     return () => {
       document.head.removeChild(script);
     };
@@ -55,6 +55,7 @@ const AuthForm: React.FC = () => {
       return;
     }
 
+    //로그인 과정
     window.Kakao.Auth.login({
       scope: 'profile_nickname, account_email',
       success: function(authObj: any) {
@@ -79,7 +80,7 @@ const AuthForm: React.FC = () => {
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('currentUser', JSON.stringify(userInfo));
 
-            //유저목록에 저장
+            //유저목록에 저장(다른 유저기능 다 쓸 수 있음.)
             const users = JSON.parse(localStorage.getItem('users') || '[]');
             if (!users.some((u: any) => u.email === userInfo.email)) {
               users.push({
@@ -89,11 +90,12 @@ const AuthForm: React.FC = () => {
               localStorage.setItem('users', JSON.stringify(users));
             }
 
-            toast.success(`환영합니다, ${userInfo.name}님!`);
+            toast.success(`환영합니다, ${userInfo.name}님`);
             navigate('/', { replace: true });
             
             //카카로 로그인 후 회원 정보 조회 및 콘솔에 출력
             console.log('로그인한 카카오 사용자 정보:', userInfo);
+            //과제 평가사항. 카카오 로그인 후 회원정보 조회및 콘솔에 출력
 
             toast.success(`환영합니다, ${userInfo.name}님!`);
             navigate('/', { replace: true });
@@ -125,11 +127,11 @@ const AuthForm: React.FC = () => {
         
         //로그인 에러 메세지
         if (error.code === 'CANCELED') {
-          toast.error('로그인이 취소되었습니다 .');
+          toast.error('로그인이 취소되었습니다.');
         } else if (error.code === 'NETWORK') {
-          toast.error('네트워크 연결이 불안정합니다. 인터넷 연결을 확인해주세요.');
+          toast.error('네트워크 연결이 불안정합니다.');
         } else {
-          toast.error('카카오 로그인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+          toast.error('카카오 로그인 중 오류가 발생했습니다.');
         }
       }
     });
