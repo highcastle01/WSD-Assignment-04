@@ -6,6 +6,7 @@ const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [nickname, setNickname] = useState('');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,6 +42,11 @@ const Header: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem('kakaoUserInfo') || '{}');
+    setNickname(userInfo.nickname || '');
+  }, []);
+
   return (
     <header className={`header ${isScrolled ? 'black-bg' : ''}`}>
       <div className="header-content">
@@ -65,6 +71,8 @@ const Header: React.FC = () => {
         </div>
         
         <div className="header-right">
+        <div className="welcome-message">안녕하세요 {nickname}님</div>
+        <Link to="/user" className="mypage">마이페이지</Link>
           <Link to="/search" className="icon-button search-icon">🔍</Link>
           {isLoggedIn ? (
             <div onClick={handleLogout} className="icon-button profile-icon">

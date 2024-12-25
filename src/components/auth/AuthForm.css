@@ -524,3 +524,66 @@ body {
     font-size: 13px;
   }
 }
+
+/****/
+
+.kakao-login-btn {
+  width: 100% !important;
+  padding: 15px 0 !important;
+  background: #FEE500 !important;
+  border: none !important;
+  border-radius: 6px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  color: #000 !important;
+}
+
+.kakao-login-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 5px 15px rgba(254, 229, 0, 0.4) !important;
+}
+
+.divider {
+  text-align: center;
+  margin: 20px 0;
+  position: relative;
+}
+
+.toggle-email-login {
+  color: #e5e5e5;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.toggle-email-login:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.kakao-login-btn {
+  background-color: #FEE500;
+  color: #000000;
+  border: none;
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.kakao-login-btn:hover {
+  background-color: #FFD43B;
+}

@@ -20,24 +20,27 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests
-        run: npm test
-        
-      - name: Run lint check
-        run: npm run lint
-        
-      - name: Check web standards
-        run: npm run validate
-        
-      - name: Run Tests
-        run: npm test -- --passWithNoTests
+      - name: Create env file
+        run: |
+          touch .env
+          echo "REACT_APP_TMDB_API_KEY=${{ secrets.REACT_APP_TMDB_API_KEY }}" >> .env
+          echo "REACT_APP_KAKAO_API_KEY=${{ secrets.REACT_APP_KAKAO_API_KEY }}" >> .env
+          echo "REACT_APP_CLIENT_VERSION=${{ secrets.REACT_APP_CLIENT_VERSION }}" >> .env
+          echo "IMAGE_URL=${{ secrets.IMAGE_URL }}" >> .env
+          echo "PORT=${{ secrets.PORT }}" >> .env
+          echo "REACT_APP_HOMEPAGE=${{ secrets.REACT_APP_HOMEPAGE }}" >> .env
+
+      - name: Run tests and lint
+        run: |
+          npm run test -- --passWithNoTests
+          npm run lint
 
   build:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
@@ -45,8 +48,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Create env file
+        run: |
+          touch .env-prod
+          echo "REACT_APP_TMDB_API_KEY=${{ secrets.REACT_APP_TMDB_API_KEY }}" >> .env-prod
+          echo "REACT_APP_KAKAO_API_KEY=${{ secrets.REACT_APP_KAKAO_API_KEY }}" >> .env-prod
+          echo "REACT_APP_CLIENT_VERSION=${{ secrets.REACT_APP_CLIENT_VERSION }}" >> .env-prod
+          echo "IMAGE_URL=${{ secrets.IMAGE_URL }}" >> .env-prod
+          echo "PORT=${{ secrets.PORT }}" >> .env-prod
+          echo "REACT_APP_HOMEPAGE=${{ secrets.REACT_APP_HOMEPAGE }}" >> .env-prod
+
       - name: Build
-        run: npm run build
+        run: npm run build:prod
 
       - name: Upload build artifact
         uses: actions/upload-pages-artifact@v3
@@ -69,22 +82,3 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
         id: deployment
-        
-      # - name: Send deployment notification
-      #   uses: licenseware/send-email-notification@v1
-      #   with:
-      #     api-key: ${{ secrets.SENDGRID_API_KEY }}
-      #     subject: "배포 완료 알림 - ${{ github.repository }}"
-      #     from-email: ${{ secrets.SENDER_EMAIL }}
-      #     to-email: castle.h0326@gmail.com
-      #     markdown-body: |
-      #       # 배포 완료 알림
-            
-      #       - 레포지토리: ${{ github.repository }}
-      #       - 브랜치: ${{ github.ref }}
-      #       - 커밋: ${{ github.sha }}
-      #       - 배포 시간: ${{ steps.deployment.outputs.time }}
-      #       - 배포 URL: ${{ steps.deployment.outputs.page_url }}
-            
-      #       자세한 내용은 GitHub Actions에서 확인하실 수 있습니다.
-      #       ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

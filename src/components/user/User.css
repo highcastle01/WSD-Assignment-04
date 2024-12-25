@@ -1,0 +1,33 @@
+.home-container {
+    padding: 20px;
+    background-color: #141414;
+    min-height: 100vh;
+    margin-top: 80px;
+    color: white;
+  }
+
+.user-profile {
+max-width: 500px;
+margin: 2rem auto;
+padding: 2rem;
+border-radius: 8px;
+box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+background-color: #1f1f1f;
+}
+
+.profile-item {
+margin: 1.5rem 0;
+display: flex;
+align-items: center;
+font-size: 1.2rem;
+}
+
+.profile-item label {
+min-width: 120px;
+font-weight: bold;
+color: #e5e5e5;
+}
+
+.profile-item span {
+color: #ffffff;
+}

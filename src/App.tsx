@@ -9,6 +9,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import NotFoundPage from './pages/NotFoundPage';
+import UserPage from './pages/UserPage';
 
 // 보호된 레이아웃 컴포넌트
 const ProtectedLayout = () => {
@@ -79,6 +80,10 @@ const router = createHashRouter([
       {
         path: "/popular",
         element: <PopluarPage />
+      },
+      {
+        path: "/user",
+        element: <UserPage />
       }
     ]
   },
