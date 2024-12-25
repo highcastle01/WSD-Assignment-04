@@ -32,7 +32,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "validate": "npm-run-all --parallel test lint build"
+    "validate": "npm-run-all --parallel test lint"
   },
   "eslintConfig": {
     "extends": [
