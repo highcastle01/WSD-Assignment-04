@@ -69,19 +69,33 @@ const AuthForm: React.FC = () => {
             //데이터 추출. 아이디랑 닉네임만. 이외에는 비즈앱 등록을 해야만 해서 수집불가.
             const userInfo = {
               id: response.id,
-              nickname: response.kakao_account?.profile?.nickname || '사용자',
-              account_email: response.kakao_account?.email || '이메일이 없습니다.'
+              name: response.kakao_account?.profile?.nickname || '사용자',
+              email: response.kakao_account?.email || '이메일이 없습니다.'
             };
 
             //카카오 로그인 사용자 정보 저장
             localStorage.setItem('kakaoUserInfo', JSON.stringify(userInfo));
             localStorage.setItem('TMDb-Key', process.env.REACT_APP_TMDB_API_KEY || '');
             localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('currentUser', JSON.stringify(userInfo));
+
+            //유저목록에 저장
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            if (!users.some((u: any) => u.email === userInfo.email)) {
+              users.push({
+                email: userInfo.email,
+                createdAt: new Date().toISOString()
+              });
+              localStorage.setItem('users', JSON.stringify(users));
+            }
+
+            toast.success(`환영합니다, ${userInfo.name}님!`);
+            navigate('/', { replace: true });
             
             //카카로 로그인 후 회원 정보 조회 및 콘솔에 출력
             console.log('로그인한 카카오 사용자 정보:', userInfo);
 
-            toast.success(`환영합니다, ${userInfo.nickname}님!`);
+            toast.success(`환영합니다, ${userInfo.name}님!`);
             navigate('/', { replace: true });
           },
           fail: function(error: any) {

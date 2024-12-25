@@ -3,7 +3,7 @@ import './User.css';
 
 const User = () => {
  const userInfo = JSON.parse(localStorage.getItem('kakaoUserInfo') || '{}');
- const { id, account_email, nickname } = userInfo;
+ const { id, email, name } = userInfo;
 
  return (
    <div className="user-profile">
@@ -12,12 +12,12 @@ const User = () => {
        <span>{id}</span>
      </div>
      <div className="profile-item">
-       <label>이메일</label>
-       <span>{account_email}</span>
+       <label>이름</label>
+       <span>{name}</span>
      </div>
      <div className="profile-item">
-       <label>닉네임</label>
-       <span>{nickname}</span>
+       <label>이메일</label>
+       <span>{email}</span>
      </div>
    </div>
  );

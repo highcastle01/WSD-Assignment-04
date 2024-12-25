@@ -20,6 +20,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Run tests
+        run: npm test
+        
+      - name: Run lint check
+        run: npm run lint
+        
+      - name: Check web standards
+        run: npm run validate
+        
+      - name: Run Tests
+        run: npm test -- --passWithNoTests
+
       - name: Create env file
         run: |
           touch .env
@@ -29,24 +41,28 @@ jobs:
           echo "IMAGE_URL=${{ secrets.IMAGE_URL }}" >> .env
           echo "PORT=${{ secrets.PORT }}" >> .env
           echo "REACT_APP_HOMEPAGE=${{ secrets.REACT_APP_HOMEPAGE }}" >> .env
-
-      - name: Run tests and lint
-        run: |
-          npm run test -- --passWithNoTests
-          npm run lint
+          echo "PUBLIC_URL=${{ secrets.PUBLIC_URL }}" >> .env
 
   build:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 20
           cache: npm
           
       - name: Install dependencies
         run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./build"
 
       - name: Create env file
         run: |
@@ -57,14 +73,7 @@ jobs:
           echo "IMAGE_URL=${{ secrets.IMAGE_URL }}" >> .env-prod
           echo "PORT=${{ secrets.PORT }}" >> .env-prod
           echo "REACT_APP_HOMEPAGE=${{ secrets.REACT_APP_HOMEPAGE }}" >> .env-prod
-
-      - name: Build
-        run: npm run build:prod
-
-      - name: Upload build artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: "./build"
+          echo "PUBLIC_URL=${{ secrets.PUBLIC_URL }}" >> .env-prod
 
   deploy:
     needs: build
