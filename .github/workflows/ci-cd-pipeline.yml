@@ -68,7 +68,7 @@ jobs:
           echo "PUBLIC_URL=${{ secrets.PUBLIC_URL }}" >> .env-prod
 
       - name: Build
-        run: npm run build
+        run: npm run build:prod
 
       - name: Upload build artifact
         uses: actions/upload-pages-artifact@v3
