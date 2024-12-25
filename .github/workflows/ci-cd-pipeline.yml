@@ -56,14 +56,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
-
-      - name: Upload build artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: "./build"
-
       - name: Create env file
         run: |
           touch .env-prod
@@ -74,6 +66,14 @@ jobs:
           echo "PORT=${{ secrets.PORT }}" >> .env-prod
           echo "REACT_APP_HOMEPAGE=${{ secrets.REACT_APP_HOMEPAGE }}" >> .env-prod
           echo "PUBLIC_URL=${{ secrets.PUBLIC_URL }}" >> .env-prod
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./build"
 
   deploy:
     needs: build
