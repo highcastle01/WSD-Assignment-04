@@ -34,14 +34,14 @@ jobs:
 
       - name: Create env file
         run: |
-          touch .env
-          echo "REACT_APP_TMDB_API_KEY=${{ secrets.REACT_APP_TMDB_API_KEY }}" >> .env
-          echo "REACT_APP_KAKAO_API_KEY=${{ secrets.REACT_APP_KAKAO_API_KEY }}" >> .env
-          echo "REACT_APP_CLIENT_VERSION=${{ secrets.REACT_APP_CLIENT_VERSION }}" >> .env
-          echo "IMAGE_URL=${{ secrets.IMAGE_URL }}" >> .env
-          echo "PORT=${{ secrets.PORT }}" >> .env
-          echo "REACT_APP_HOMEPAGE=${{ secrets.REACT_APP_HOMEPAGE }}" >> .env
-          echo "PUBLIC_URL=${{ secrets.PUBLIC_URL }}" >> .env
+          touch .env-dev
+          echo "REACT_APP_TMDB_API_KEY=${{ secrets.REACT_APP_TMDB_API_KEY }}" >> .env-dev
+          echo "REACT_APP_KAKAO_API_KEY=${{ secrets.REACT_APP_KAKAO_API_KEY }}" >> .env-dev
+          echo "REACT_APP_CLIENT_VERSION=${{ secrets.REACT_APP_CLIENT_VERSION }}" >> .env-dev
+          echo "IMAGE_URL=${{ secrets.IMAGE_URL }}" >> .env-dev
+          echo "PORT=${{ secrets.PORT }}" >> .env-dev
+          echo "REACT_APP_HOMEPAGE=${{ secrets.REACT_APP_HOMEPAGE }}" >> .env-dev
+          echo "PUBLIC_URL=${{ secrets.PUBLIC_URL }}" >> .env-dev
 
   build:
     needs: test
