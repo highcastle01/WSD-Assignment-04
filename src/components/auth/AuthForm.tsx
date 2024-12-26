@@ -67,7 +67,7 @@ const AuthForm: React.FC = () => {
           success: function(response: any) {
             console.log('카카오 사용자 정보 응답 : ', response);
 
-            //데이터 추출. 아이디랑 닉네임만. 이외에는 비즈앱 등록을 해야만 해서 수집불가.
+            //데이터 추출. 아이디랑 이름, 이메일만. 이외에는 비즈앱 등록을 해야만 해서 수집불가.
             const userInfo = {
               id: response.id,
               name: response.kakao_account?.profile?.nickname || '사용자',
@@ -137,8 +137,10 @@ const AuthForm: React.FC = () => {
     });
   };
 
+  //이하 기존 기능.
+
   useEffect(() => {
-    // 로그인 상태 확인
+    //로그인 상태 확인
     const isLoggedIn = localStorage.getItem('isLoggedIn');
     if (isLoggedIn) {
       navigate('/');
@@ -180,7 +182,7 @@ const AuthForm: React.FC = () => {
         localStorage.setItem('TMDb-Key', user.password);
         localStorage.setItem('currentUser', JSON.stringify(user));
         toast.success('로그인에 성공하였습니다.');
-        // window.location.reload() 대신 navigate 사용
+        //window.location.reload() 대신 navigate 사용
         navigate('/', { replace: true });
       } else {
         toast.error('이메일 또는 비밀번호가 일치하지 않습니다.');
@@ -209,16 +211,16 @@ const AuthForm: React.FC = () => {
     }
   
     try {
-      // 기존 사용자 목록 가져오기
+      //기존 사용자 목록 가져오기
       const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
       
-      // 이미 존재하는 이메일인지 확인
+      //이미 존재하는 이메일인지 확인
       if (existingUsers.some((user: any) => user.email === formData.email)) {
         toast.error('이미 존재하는 이메일입니다.');
         return;
       }
   
-      // 새 사용자 추가
+      //새 사용자 추가
       const newUser = {
         email: formData.email,
         password: formData.password,
@@ -227,7 +229,7 @@ const AuthForm: React.FC = () => {
   
       existingUsers.push(newUser);
       
-      // 업데이트된 사용자 목록 저장
+      //업데이트된 사용자 목록 저장
       localStorage.setItem('users', JSON.stringify(existingUsers));
       
       toast.success('회원가입에 성공하였습니다.');
