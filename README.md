@@ -18,6 +18,9 @@
 
 위 두개가 주 내용인 만큼 해당 내용 위주로 설명을 하고자합니다.
 
+![image](https://github.com/user-attachments/assets/1a8483c4-d94f-43e0-ac86-8da451491d5a)
+
+
 ---
 
 ## 🚀 프로젝트 시작하기
@@ -80,6 +83,10 @@ window.Kakao.Auth.login({
 - 🔹 프로필 정보 조회 (ID, 이메일, 이름)
 - 🔹 localStorage를 통한 데이터 저장
 - 🔹 세션 관리 구현
+- ![image](https://github.com/user-attachments/assets/0ce87335-0c75-4b78-a001-34cd3b4dedb6)
+- 헤더 캡쳐로, 왼쪽부터 계정 사용자 이름, 프로필 정보 조회를 위한 마이페이지, (검색창), 로그아웃 버튼
+- ![image](https://github.com/user-attachments/assets/10104ffa-746c-418e-81fe-45b1639c38a1)
+- 마이페이지
 </details>
 
 ## 📋 평가 기준 달성 현황
@@ -98,32 +105,55 @@ window.Kakao.Auth.login({
 | 8 | 로그인 실패 에러 메시지 | ✓ | `toast.error()` 활용한 에러 처리 |
 | 9 | API 예외 처리 | ✓ | 다양한 에러 코드별 처리 구현 |
 | 10 | 네트워크 오류 피드백 | ✓ | 네트워크 상태별 사용자 피드백 구현 |
-
-### 2. 추가 평가 기준 ✅
-
-| 번호 | 평가 항목 | 구현 | 검증 내용 |
-|------|-----------|:----:|-----------|
-| 1 | .env 파일 구성 | ✓ | .env-dev/.env-prod 분리 구현 |
-| 2 | TMDB API Key 관리 | ✓ | `REACT_APP_TMDB_API_KEY` 환경변수 사용 |
-| 3 | 카카오 API Key 관리 | ✓ | `REACT_APP_KAKAO_API_KEY` 환경변수 사용 |
-| 4 | GitHub API 키 보안 | ✓ | GitHub Actions secrets 활용 |
-| 5 | 환경별 스크립트 구분 | ✓ | package.json에 start:dev/prod, build:dev/prod 구분 |
-| 6 | 토큰 저장소 관리 | ✓ | `localStorage.setItem('kakaoAccessToken', authObj.access_token)` 구현 |
-| 7 | .gitignore 설정 | ✓ | 환경 변수 파일 포함 확인 |
-| 8 | 배포 플랫폼 동작 | ✓ | Github actions 기반 GitHub Pages 정상 작동 : https://highcastle01.github.io/WSD-Assignment-04 |
-| 9 | 환경 전환 원활성 | ✓ | env-cmd 활용한 환경 전환 구현 |
-| 10 | CORS 이슈 해결 | ✓ | 적절한 CORS 설정 및 에러 처리 구현 |
+| 11 | .env 파일 구성 | ✓ | .env-dev/.env-prod 분리 구현 |
+| 12 | TMDB API Key 관리 | ✓ | `REACT_APP_TMDB_API_KEY` 환경변수 사용 |
+| 13 | 카카오 API Key 관리 | ✓ | `REACT_APP_KAKAO_API_KEY` 환경변수 사용 |
+| 14 | GitHub API 키 보안 | ✓ | GitHub Actions secrets 활용 |
+| 15 | 환경별 스크립트 구분 | ✓ | package.json에 start:dev/prod, build:dev/prod 구분 |
+| 16 | 토큰 저장소 관리 | ✓ | `localStorage.setItem('kakaoAccessToken', authObj.access_token)` 구현 |
+| 17 | .gitignore 설정 | ✓ | 환경 변수 파일 포함 확인(.env*, *.env, .env-dev, .env-prod) |
+| 18 | 배포 플랫폼 동작 | ✓ | Github actions 기반 GitHub Pages 정상 작동 : https://highcastle01.github.io/WSD-Assignment-04 |
+| 19 | 환경 전환 원활성 | ✓ | env-cmd 활용한 환경 전환 구현 |
+| 20 | CORS 이슈 해결 | ✓ | 적절한 CORS 설정 및 에러 처리 구현 |
 
 ### 구현 특이사항 🔍
 
-1. **에러 처리 세분화**
+1. **API 에러 처리 세분화 + 네트워크 오류 피드백**
 ```typescript
-if (error.code === -401) {
-  toast.error('인증이 만료되었습니다. 다시 로그인해주세요.');
-} else if (error.code === -502) {
-  toast.error('서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.');
-} else if (error.code === -504) {
-  toast.error('서버 응답 시간이 초과되었습니다. 네트워크 상태를 확인해주세요.');
+// 1. 사용자 정보 요청 실패 처리
+fail: function(error: any) {
+ console.error('사용자 정보 요청 실패:', error);
+ 
+ // 에러 코드별 세분화된 처리
+ if (error.code === -401) {
+   toast.error('인증이 만료되었습니다. 다시 로그인해주세요.');
+ } else if (error.code === -502) {
+   toast.error('서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.');
+ } else if (error.code === -504) {
+   toast.error('서버 응답 시간이 초과되었습니다. 네트워크 상태를 확인해주세요.');
+ } else {
+   toast.error(`카카오 로그인 중 오류가 발생했습니다: ${error.msg}`);
+ }
+
+ // 재시도 안내
+ toast.info('다시 시도하려면 새로고침 해주세요.', {
+   autoClose: false,
+   closeButton: true
+ });
+}
+```
+```typescript
+// 2. 카카오 로그인 실패 처리
+fail: function(error: any) {
+ console.error('카카오 로그인 실패:', error);
+ 
+ if (error.code === 'CANCELED') {
+   toast.error('로그인이 취소되었습니다.');
+ } else if (error.code === 'NETWORK') {
+   toast.error('네트워크 연결이 불안정합니다.');
+ } else {
+   toast.error('카카오 로그인 중 오류가 발생했습니다.');
+ }
 }
 ```
 
