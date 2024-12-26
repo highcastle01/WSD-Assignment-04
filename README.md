@@ -216,9 +216,9 @@ fail: function(error: any) {
 2. **환경 구분 스크립트(package.json)**
 ```json
 "scripts": {
-  "start:dev": "env-cmd -f .env react-scripts start",
+  "start:dev": "env-cmd -f .env-dev react-scripts start",
   "start:prod": "env-cmd -f .env-prod react-scripts start",
-  "build:dev": "env-cmd -f .env react-scripts build",
+  "build:dev": "env-cmd -f .env-dev react-scripts build",
   "build:prod": "env-cmd -f .env-prod react-scripts build"
 }
 ```
