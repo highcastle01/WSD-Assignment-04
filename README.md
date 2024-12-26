@@ -1,126 +1,213 @@
-# JBNU 웹서비스설계 과제2 :: Netflix Clone Project 🎥
+# 🎯 JBNU 웹서비스설계 과제4 :: 카카오 로그인 구현 프로젝트
 
-본 프로젝트는 **React.js**와 **Typescript**를 기반으로 한 넷플릭스 클론 코딩 프로젝트입니다.
-사이트의 이름은 "Castle Movie"로, 제가 사용하는 계정의 이름인 castle을 사용하였습니다.
-영화 콘텐츠를 탐색하고 사용자 친화적인 인터페이스를 제공하기 위해 다양한 최신 기술 스택과 AI 서비스를 활용했습니다.
+<div align="center">
 
-현재 제작된 정적페이지는 깃허브 액션에 ci-cd파이프라인을 이용하여 배포되고 있으며, tag를 이용해 버전관리 되고 있습니다.
-현재 버전은 **v1.0.1** 입니다.
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Kakao](https://img.shields.io/badge/Kakao-FFCD00?style=for-the-badge&logo=kakao&logoColor=black)
 
----
+</div>
 
-## 🚀 기술 스택
+## 📌 프로젝트 개요
+본 프로젝트는 웹서비스 설계 과제2에서 구현했던 넷플릭스 클론 사이트 만들기를 기반으로
+**`카카오 로그인`** 을 구현한 과제입니다.
 
-| **Frontend** | **CI/CD**         | **상태관리 및 재사용성**     | **AI Services**              |
-|--------------|-------------------|------------------------------|------------------------------|
-| ⚛️ React.js  | 🐙 GitHub Actions | 🛠️ Redux                     | 🤖 Perplexity                |
-| 📘 Typescript| 🔄 GitHub Workflow| 🔗 Custom hook               | 🤖 Claude, ChatGPT           |
+주요 기능은 과제2를 그대로 유지하고 있으며, 본 과제에서는
+1. 🔑 카카오 로그인
+2. 🔄 개발-배포 환경 구분
 
----
-
-## !! 로컬과 배포사이트 차이
-
-- 배포 사이트를 기준으로 코드가 작성되어있으므로, 로컬에서 실행시 base_url이 배포 사이트인
-wsd-assignment-02로 리다이렉트 됩니다. 로컬에서 실행시 이 부분을 떼주면(localhost:3000/) 로컬에서도 접속이 가능합니다.
+위 두개가 주 내용인 만큼 해당 내용 위주로 설명을 하고자합니다.
 
 ---
 
-## 🛠️ 프로젝트 사용 방법
+## 🚀 프로젝트 시작하기
 
-1. **클론**: 이 레포지토리를 로컬 환경에 복사합니다.  
-   ```bash
-   git clone https://github.com/your-repo/netflix-clone.git
+```bash
+# 프로젝트 클론
+git clone https://github.com/YourUsername/WSD-Assignment-04.git
 
-2. **의존성 설치**
-   ```bash
-    npm install
+# 프로젝트 폴더로 이동
+cd WSD-Assignment-04
 
-3. **개발 서버 실행**
-   ```bash
-    npm run start
-   //로컬에서 실행시 지금 레포지토리가 베이스라인으로 되어있어
-   //http://localhost:3000/wsd-assignment-02/ 이런식으로 뜨게되므로
-   //http://localhost:3000 뒷 부분을 지워 접속시 접속이 문제없이 됩니다.
+# 의존성 패키지 설치
+npm install
+
+# 개발 서버 실행
+npm run start:dev
+
+# 또는 프로덕션 서버 실행
+npm run start:prod
+```
+
+> **Note**: 실행하기 전에 `.env` 파일에 필요한 API 키가 설정되어 있는지 확인해주세요.
 
 ---
-## 📂 프로젝트 파일 구조
 
-  ```bash
-  src/
-  ├── components/          # 재사용 가능한 컴포넌트
-  │   ├── auth/           # 인증 관련 컴포넌트
-  │   ├── common/         # 공용 컴포넌트
-  │   ├── home/          # 홈 페이지 컴포넌트
-  │   ├── layouts/        # 레이아웃 컴포넌트
-  │   ├── popular/        # 인기 콘텐츠 컴포넌트
-  │   ├── search/         # 검색 페이지 컴포넌트
-  │   └── wishlist/       # 위시리스트 컴포넌트
-  │
-  ├── hooks/              # 커스텀 훅 모음
-  │   ├── useMovieData.ts
-  │   └── useWishlist.ts
-  │
-  ├── pages/              # 주요 페이지
-  │   ├── HomePage.tsx
-  │   ├── PopularPage.tsx
-  │   ├── SearchPage.tsx
-  │   └── WishlistPage.tsx
-  │
-  ├── store/              # 상태 관리
-  │   └── slices/         # Redux 슬라이스
-  │
-  ├── styles/             # 공통 스타일
-  │   ├── Auth.css
-  │   ├── Homepage.css
-  │   └── variables.css
-  │
-  ├── types/              # TypeScript 타입 정의
-  │   └── movie.ts
-  │
-  └── utils/              # 유틸리티 함수 및 설정
-  ```
----
+## 💡 주요 구현 기능
 
-## 🌟 주요 기능
+### 1. 카카오 로그인 구현 ✅
 
-### 1. 로그인/회원가입 페이지 (`/signin`)
-- **동적 디자인 구현**  
-  오픈소스에서 제공되는 CSS 디자인을 **AI**를 활용하여 React 코드로 변환 및 적용.  
-  사용자는 직관적이고 유려한 UI/UX 환경에서 로그인 및 회원가입을 할 수 있습니다.
+<details>
+<summary><b>1.1 카카오 SDK 통합</b></summary>
 
-### 2. 메인 페이지 (`/`)
-- **TMDB API 통합**  
-  TMDB API를 활용하여 최신 영화 데이터를 불러옵니다.  
-- **배너**  
-  배너에서 재생버튼을 누르면 유튜브에서 해당 영화의 공식 예고편을 볼 수 있으며 상세정보를 누르면 별점이나 개봉일자가 뜨게 됩니다.
-- **영화 목록**
-  영화 목록에서는 슬라이드 혹은 화살표 버튼을 눌러서 목록을 확인할 수 있습니다.
-- **찜하기**
-  커스텀 훅과 Redux를 이용해 상태관리가 되는 찜하기 기능을 통해 영화를 찜할 수 있습니다. 찜하게 되면 로컬스토리지에 저장됩니다.
-  해당 기능은 대세 콘텐츠, 찾기 페이지와 모두 공통기능으로 지원됩니다. 찜할 때는 **하트**를 눌러주세요!
+- 🔹 카카오 JavaScript API 키 기반으로 구현
+- 🔹 AuthForm.tsx에서 SDK 초기화 및 관리
+- 🔹 해시 라우팅 기반 구현
+- 🔹 네트워크 및 CORS 에러 처리
+</details>
 
-### 3. 대세 콘텐츠 페이지 (`/popular`)
-- **TMDB API 통합**  
-  TMDB API를 활용하여 최신 영화 데이터를 불러옵니다.  
-- **무한 스크롤 & 페이지네이션 기능**  
-  대량의 데이터를 효율적으로 탐색할 수 있도록 **무한 스크롤** 및 **테이블 뷰** 기능을 구현하였습니다.
+<details>
+<summary><b>1.2 로그인 프로세스</b></summary>
 
-### 4. 찾기 페이지 (`/search`)
-- **검색**  
-  검색창에 영화 제목을 입력 후 엔터를 누르면 관련 영화가 뜨게 되며, 최근 검색한 영화 5개를 볼 수 있습니다. 검색시 로컬 스토리지에 검색어가 저장되어 가능한 로직입니다.
-- **필터**  
-  API를 통해 불러와진 영화의 장르들을 선택해 영화를 골라 볼 수 있습니다. 필터는 중첩되어 인기순으로 어떤 장르의 영화들을 볼 수 도 있고, 1960년대의 영화를 볼 수도 있습니다. 물론 필터 초기화도 지원합니다.
-- **페이지네이션 영화 목록**  
-  영화 목록은 다른 페이지에서 처럼 map을 이용해 나열되며, 페이지를 넘기며 카드 형태의 영화들을 확인할 수 있습니다.
+```typescript
+window.Kakao.Auth.login({
+  scope: 'profile_nickname, account_email',
+  success: function(authObj: any) {
+    // 인증 성공 처리
+    localStorage.setItem('kakaoAccessToken', authObj.access_token);
+  },
+  fail: function(error: any) {
+    // 에러 처리
+    console.error('카카오 로그인 실패:', error);
+  }
+});
+```
+</details>
 
-### 5. 내가 찜한 리스트 페이지 (`/wishlist`)
-- **찜한 영화들**  
-  로컬 스토리지에 저장해둔 찜해둔 영화들을 불러옵니다. 이미지는 베이스URL을 기준으로 이미지 링크와 합해 사진을 불러옵니다.
-- **무한 스크롤 / 테이블뷰**  
-  대량의 영화를 보기 쉽게 하기 위해 **무한 스크롤** 및 **테이블 뷰** 기능을 구현하였습니다.
-- **정렬**
-  로컬 저장소에 찜한 영화를 저장할 때 찜한 시간을 기록하여 찜한 순서로도 영화 목록을 볼 수 있으며, 평점순, 개봉일순으로도 영화 목록을 볼 수 있습니다.
-  
+<details>
+<summary><b>1.3 사용자 프로필 관리</b></summary>
 
+- 🔹 프로필 정보 조회 (ID, 이메일, 이름)
+- 🔹 localStorage를 통한 데이터 저장
+- 🔹 세션 관리 구현
+</details>
 
+## 📋 평가 기준 달성 현황
 
+### 1. 핵심 기능 평가 항목 ✅
+
+| 번호 | 평가 항목 | 구현 | 검증 내용 |
+|------|-----------|:----:|-----------|
+| 1 | 카카오 로그인 구현 | ✓ | `window.Kakao.Auth.login()` 구현 및 정상 작동 |
+| 2 | 메인 페이지 자동 리디렉션 | ✓ | `navigate('/', { replace: true })` 구현 |
+| 3 | 프로필 이름 헤더 표시 | ✓ | `userInfo.name` 저장 및 Header.tsx 파일에 표시 구현 |
+| 4 | 회원 정보 조회 및 콘솔 출력 | ✓ | `console.log('로그인한 카카오 사용자 정보:', userInfo)` 구현, `User.tsx`에 프로필 구현 |
+| 5 | 새로고침 시 로그인 유지 | ✓ | `localStorage` 활용하여 상태 유지 |
+| 6 | 로그아웃 기능 | ✓ | 세션 및 토큰 정리 로직 구현, 로그아웃시 프로텍트 레이아웃 기능으로 signin페이지로 이동 |
+| 7 | UI 분기 처리 | ✓ | `isLoggedIn` 상태에 따른 조건부 렌더링 |
+| 8 | 로그인 실패 에러 메시지 | ✓ | `toast.error()` 활용한 에러 처리 |
+| 9 | API 예외 처리 | ✓ | 다양한 에러 코드별 처리 구현 |
+| 10 | 네트워크 오류 피드백 | ✓ | 네트워크 상태별 사용자 피드백 구현 |
+
+### 2. 추가 평가 기준 ✅
+
+| 번호 | 평가 항목 | 구현 | 검증 내용 |
+|------|-----------|:----:|-----------|
+| 1 | .env 파일 구성 | ✓ | .env-dev/.env-prod 분리 구현 |
+| 2 | TMDB API Key 관리 | ✓ | `REACT_APP_TMDB_API_KEY` 환경변수 사용 |
+| 3 | 카카오 API Key 관리 | ✓ | `REACT_APP_KAKAO_API_KEY` 환경변수 사용 |
+| 4 | GitHub API 키 보안 | ✓ | GitHub Actions secrets 활용 |
+| 5 | 환경별 스크립트 구분 | ✓ | package.json에 start:dev/prod, build:dev/prod 구분 |
+| 6 | 토큰 저장소 관리 | ✓ | `localStorage.setItem('kakaoAccessToken', authObj.access_token)` 구현 |
+| 7 | .gitignore 설정 | ✓ | 환경 변수 파일 포함 확인 |
+| 8 | 배포 플랫폼 동작 | ✓ | Github actions 기반 GitHub Pages 정상 작동 : https://highcastle01.github.io/WSD-Assignment-04 |
+| 9 | 환경 전환 원활성 | ✓ | env-cmd 활용한 환경 전환 구현 |
+| 10 | CORS 이슈 해결 | ✓ | 적절한 CORS 설정 및 에러 처리 구현 |
+
+### 구현 특이사항 🔍
+
+1. **에러 처리 세분화**
+```typescript
+if (error.code === -401) {
+  toast.error('인증이 만료되었습니다. 다시 로그인해주세요.');
+} else if (error.code === -502) {
+  toast.error('서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.');
+} else if (error.code === -504) {
+  toast.error('서버 응답 시간이 초과되었습니다. 네트워크 상태를 확인해주세요.');
+}
+```
+
+2. **환경 구분 스크립트(package.json)**
+```json
+"scripts": {
+  "start:dev": "env-cmd -f .env react-scripts start",
+  "start:prod": "env-cmd -f .env-prod react-scripts start",
+  "build:dev": "env-cmd -f .env react-scripts build",
+  "build:prod": "env-cmd -f .env-prod react-scripts build"
+}
+```
+
+3. **보안 처리**
+- GitHub Actions secrets 활용
+- 환경변수 파일 분리
+- API 키 보안 처리
+
+#### 2.2 환경 설정 및 보안 🔒
+
+```mermaid
+graph TD
+    A[환경 설정] --> B[개발 환경]
+    A --> C[배포 환경]
+    B --> D[.env-dev]
+    C --> E[.env-prod]
+    D --> F[로컬호스트:3000]
+    E --> G[GitHub Pages]
+```
+
+### 3. 환경 설정 상세 ⚙️
+
+<details>
+<summary><b>3.1 개발 환경 (.env-dev)</b></summary>
+
+```env
+IP_ADDRESS=localhost
+PORT=3000
+REACT_APP_TMDB_API_KEY=[보안]
+REACT_APP_KAKAO_API_KEY=[보안]
+PUBLIC_URL=.
+REACT_APP_HOMEPAGE=http://localhost:3000
+REACT_APP_CLIENT_VERSION=0.0.1
+```
+</details>
+
+<details>
+<summary><b>3.2 배포 환경 (.env-prod)</b></summary>
+
+```env
+IP_ADDRESS=localhost
+PORT=4000
+REACT_APP_TMDB_API_KEY=[보안]
+REACT_APP_KAKAO_API_KEY=[보안]
+PUBLIC_URL=https://highcastle01.github.io/WSD-Assignment-04
+REACT_APP_HOMEPAGE=https://highcastle01.github.io/Wsd-Assignment-04
+REACT_APP_CLIENT_VERSION=0.0.1
+```
+</details>
+
+### 4. 보안 고려사항 🔐
+
+- 🔒 GitHub Actions secrets에 API 키 저장
+- 🔒 환경변수 보안 처리
+- 🔒 배포 시 민감 정보 보호
+
+### 5. 추가 특징 🌟
+
+- ⭐ TypeScript 완벽 구현
+- ⭐ 종합적인 에러 처리
+- ⭐ 반응형 UI 디자인
+- ⭐ 크로스 브라우저 호환성
+
+### 6. 기술 스택 🛠️
+
+<div align="center">
+
+| 기술 | 버전 |
+|------|------|
+| React | ^18.3.1 |
+| React DOM | ^18.3.1 |
+| React Kakao Login | ^2.1.1 |
+| React Router DOM | ^6.20.0 |
+| React Toastify | ^10.0.6 |
+| TypeScript | ^4.9.5 |
+
+</div>
