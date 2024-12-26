@@ -18,6 +18,61 @@
 
 위 두개가 주 내용인 만큼 해당 내용 위주로 설명을 하고자합니다.
 
+# 📚 목차
+
+1. [🚀 배포 정보](#-배포-정보)
+  - 배포 상태
+  - 자동 배포 프로세스
+  - 배포 환경
+
+2. [🚀 프로젝트 시작하기](#-프로젝트-시작하기)
+  - 설치 방법
+  - 환경 설정
+
+3. [💡 주요 구현 기능(평가항목 충족 여부)](#-주요-구현-기능)
+  - 카카오 SDK 통합
+  - 로그인 프로세스
+  - 사용자 프로필 관리
+
+4. [📋 평가 기준 달성 현황](#-평가-기준-달성-현황)
+  - 핵심 기능 평가 항목 (1-10)
+  - 추가 평가 기준 (11-20)
+  - 구현 특이사항
+
+5. [⚙️ 환경 설정 상세](#-환경-설정-상세)
+  - 개발 환경 (.env-dev)
+  - 배포 환경 (.env-prod)
+
+6. [🔐 보안 고려사항](#-보안-고려사항)
+
+7. [🌟 추가 특징](#-추가-특징)
+
+8. [🛠️ 기술 스택](#-기술-스택)
+
+## 🚀 배포 정보
+
+<div align="center">
+
+[![배포 상태](https://github.com/HighCastle01/WSD-Assignment-04/actions/workflows/ci-cd-pipeline.yml/badge.svg)](https://highcastle01.github.io/WSD-Assignment-04/)
+
+### [🔗 배포중인 사이트](https://highcastle01.github.io/WSD-Assignment-04/)
+
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-222222?style=for-the-badge&logo=GitHub%20Pages&logoColor=white)](https://highcastle01.github.io/WSD-Assignment-04/)
+[![CI/CD](https://img.shields.io/badge/CI%2FCD-2088FF?style=for-the-badge&logo=GitHub%20Actions&logoColor=white)](https://github.com/HighCastle01/WSD-Assignment-04/actions)
+
+</div>
+
+### 🔄 자동 배포 프로세스
+- GitHub Actions를 통한 CI/CD 파이프라인 구축
+- 메인 브랜치 푸시 시 자동 배포
+- 환경변수 및 시크릿 키 자동 주입
+
+### 🌐 배포 환경
+- **플랫폼**: GitHub Pages
+- **도메인**: `highcastle01.github.io/WSD-Assignment-04`
+- **배포 브랜치**: gh-pages
+
+아래는 로그인 화면입니다.
 ![image](https://github.com/user-attachments/assets/1a8483c4-d94f-43e0-ac86-8da451491d5a)
 
 
